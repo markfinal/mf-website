@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // TODO: don't embed passwords like this
-$mysqli = new mysqli("localhost", "mark", "test", "licensing");
+$mysqli = new mysqli("localhost", "markfina_admin", "T3st!!", "markfina_licensing");
 if (mysqli_connect_errno())
 {
 	echo mysqli_connect_error();
