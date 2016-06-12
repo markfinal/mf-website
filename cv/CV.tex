@@ -1,0 +1,135 @@
+% generic CV
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{hyperref}
+
+\newcommand{\me}{Mark Final BSc (Hons) AMIMA}
+\newcommand{\largeme}{{\Large\bf\me}}
+\newcommand{\cvheading}[1]{{\medskip\noindent\hspace{-5mm}{\sc #1}\par}}
+\newcommand{\place}[2]{\vspace*{1ex}{\noindent\bf #1}\hfill{\it #2}\par}
+\newcommand{\fromto}[2]{{\bf From}: #1 {\bf To}: #2\par}
+
+% page setup
+% horizontal settings
+\setlength{\oddsidemargin}{0mm}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\setlength{\parindent}{0mm}
+\setlength{\itemindent}{0mm}
+\setlength{\leftmargin}{0mm}
+
+% vertical settings
+\setlength{\topmargin}{0mm}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+\setlength{\hoffset}{0mm}
+\setlength{\topskip}{0mm}
+\setlength{\voffset}{0mm}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-2in}
+\setlength{\footskip}{0mm}
+\setlength{\itemsep}{0mm}
+\setlength{\parsep}{0mm}
+\setlength{\topsep}{0mm}
+
+\begin{document}
+
+\largeme
+
+\begin{tabular}{lrl}
+& \hspace*{30mm}{\it Birth Date} & 29th April 1976\\
+Wisborough Green & {\it Mobile} & +44 (0)7811 660473\\
+West Sussex &&\\
+England &&\\
+{\it E-mail} & \multicolumn{2}{l}{\href{mailto:markfinal@hotmail.com}{markfinal@hotmail.com}}\\
+{\it Linkedin} & \multicolumn{2}{l}{\href{http://uk.linkedin.com/in/markfinal}{http://uk.linkedin.com/in/markfinal}}\\
+\end{tabular}
+
+%\cvheading{Personal Statement}
+%TO WRITE: Customized for each company: usually mention 1) length of programming experience, 2) team/individual work, 3) communication skills, 4) why you want the job applied for.
+
+\cvheading{Education}
+\place{University of Hertfordshire}{College Lane, Hatfield, Herts, AL10 9AB}
+First class honours degree in Mathematics with final year project entitled ``Lagrangian and Hamiltonian Systems'' (1997).
+
+\place{Kings Langley Secondary School}{Love Lane, Kings Langley, Herts, WD4 9HN}
+A-levels (1994): Mathematics (A), Physics (A), Art \& Design (C).
+
+GSCE (1992-3): 10 A-C subjects including Mathematics, English and the Sciences.
+
+\cvheading{Professional Skills}
+\begin{itemize}
+\item Experience in the visual effects industry as a software engineer since June 2010. Main role is developing and maintaining the 3D painting projection application, Mari.
+\item Experience in the games industry as a graphics software engineer from 2000 to 2010. Led, or developed on, four generations of graphics technologies used by Electronic Arts world wide studios, notably on PlayStation 3.
+\item Experience using C and C++ in academia and industry since 1997. Additionally, some experience with Intel and PowerPC assembly languages and vector intrinsics, and C\# for Windows and Mono for Linux and OSX.
+\item Daily use of VisualStudio 2005--2010, and GCC toolchains; git and svn for source control. Past experience of IncrediBuild and SN-DBS distributed build systems, Perforce source control, and game console related toolchains.
+\item Experienced in GLSL, HLSL, Cg, and assembler shader programming languages, OpenGL 1--4 (GLW/GLX backends), Direct3D (Windows v6--11 and Xbox360), and libgcm on PlayStation 3. Proficient using GPU profiling tools, such as PIX, NVPerfHUD, and GPAD, to identify bottlenecks.
+\item Basic experience of writing shaders and RIB files for RenderMan.
+\item Developed games rendering technology in a test-driven environment.
+\item Work effectively both in a team and as an individual, and am competent communicating in written and oral mediums.
+\item Technically led and mentored junior engineering staff.
+\item Other skills include creating and maintaining build configurations, in SCons, Make, Jam, EA proprietary solutions, and my own open source build system. At EA, jointly maintained and enhanced an automated buildfarm, with a PHP and Perl front-end driven from a PostgreSQL database, across 15 blade servers.
+\end{itemize}
+
+\pagebreak
+\renewcommand{\thepage}{\tiny{\me\hfill\arabic{page}\hfill Curriculum Vitae}}
+
+\cvheading{Work Experience}
+\place{The Foundry VisionMongers}{The Communications Building, Leicester Square, London, WC2H 7LT}
+\fromto{June 2010}{Present}
+I am a software engineer for the 3D painting projection application, Mari. I ported Mari from a Linux only application to Windows, updating the C++ source base as well as the SCons build system. I am responsible for the Ptex support in Mari, having taken it from early prototype to a full production implementation. Ptex required many problems to be addressed, including how to efficiently create and maintain dynamic UV maps of arbitrary geometry.
+\begin{itemize}
+\item Strong team member, with good communication skills. Jointly responsible for daily reports to collaborating offsite developers and code merges between sites.
+\item I have stood in for the lead engineer when required.
+\item Good relationships with users, including Pixar and Lucas Film.
+\item Broad skills covering more than just programming. I will happily fix build scripts, help with documentation or QA, and manage builds for external release.
+\end{itemize}
+
+\place{Electronic Arts}{Onslow House, Onslow Street, Guildford, Surrey, GU1 4TL}
+\fromto{March 2001}{May 2010}
+From December 2009 to May 2010 I worked at Criterion Games, enhancing their rendering engine to become a multi-threaded/-CPU solution for Xbox360 and PlayStation 3, that was used in the "Need For Speed: Hot Pursuit" title.
+
+Previously, I worked at EATech (formally Criterion Software), a central technology group supporting world wide game teams at Electronic Arts.
+\begin{itemize}
+\item Senior member of the technology team at EATech UK. Lead engineer for graphics technology for development and support, specializing on PlayStation 3.
+\item Developed PlayStation 3 graphics technology, collaborating with EA teams to create the FightNight demo shown at the PlayStation 3 launch in 2005.
+\item Involved with many other game titles, including Burnout Paradise, Skate (1--3 \& It), Mirror's Edge, Need For Speed Prostreet, Fight Night 3, Tiger Woods.
+\item Developed RenderWare 3 and 4 middleware for Direct3D7--9 and OpenGL (Windows/OSX), and PlayStation 3.
+\end{itemize}
+\place{AAA Game}{5th Floor, Crown House, Linton Road, Barking, IG11 8GH}
+\fromto{March 2000}{March 2001}
+At AAA Game I was a games programmer, developing the Direct3D 6 engine for PC CD-ROM titles.
+
+\place{University of Hertfordshire}{Address on previous page}
+\fromto{October 1997}{February 2000}
+After graduating, I taught A-level standard mathematics to engineering undergraduates, and researched numerical optimization techniques. In the 1998--9 academic year I was course leader on a second year module in the Mathematics degree teaching Fortran 90.
+
+\pagebreak
+
+\cvheading{Main programming languages}
+C++, C, C\#, Python
+
+\cvheading{Additional language experiences}
+Assembly languages, vector intrinsics, \TeX, \LaTeXe, Make, Java, Perl, PHP, SQL, Jam, HTML, NAnt.
+
+\cvheading{Key skills}
+Enjoys a challenge. Proactive. Good time keeping. Correctness and consistency. Key team member. Share information. Evaluate new technology and hardware. Documentation. Code reviews. Efficient code and processes. Profiling bottlenecks. Best use of toolchains.
+
+\cvheading{Interests, Responsibilities and Notable Achievements}
+\begin{itemize}
+\item I designed and continue to develop and maintain an Open Source build system, Opus, published on GoogleCode. Opus is a declarative script dependency system, with a plugin architecture, based upon C\#. It has scaled well to both simple tests and commerical sized source bases.
+\item My voice has been used for The Foundry's external phone system.
+\item An associate member of the Institute of Mathematics and its Applications, and also a member of the UK \TeX\ Users' Group.
+\item I am a member of the Institute of Advanced Motorists, having passed the advanced test in October 2007.
+\item In February 2007, I was one of the employee representatives for EATech during a redundancy consultancy period.
+\item Throughout February 2000, I backpacked along the Sunshine Coast of Australia from Brisbane to Cairns.
+\item While at University, I was a member of a team competing at the British Computer Society Programming Competition, from 1998 to 2000.
+\item I won a programming competition in 1999 in Acorn User magazine, writing a 3D graphics demo in C++ on RISCOS on a StrongARM.
+\item My professional interests including dabbling in computer graphics techniques, technical typography with \LaTeXe, developing graphics engines and build systems.
+\item My leisure interests include playing the piano, driving, cooking, science fiction, astronomy, origami, movies, and Sudoku and Hitoshii (KenKen) puzzles.
+\end{itemize}
+
+\cvheading{References}
+References will be provided upon request.
+
+\end{document}
