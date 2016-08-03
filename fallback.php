@@ -21,39 +21,36 @@ function fatal_handler()
   }
 }
 
-header('Content-Type: application/json');
-
-$password=explode("\n", file_get_contents('phppasswd'));
-
-$connection = new PDO('mysql:host=localhost;dbname=markfina_licensing;charset=utf8', 'markfina_php', $password[0]);
-
-echo json_encode('Hello', JSON_PRETTY_PRINT);
-echo json_encode($_SERVER['REQUEST_URI'], JSON_PRETTY_PRINT);
-echo json_encode($_POST, JSON_PRETTY_PRINT);
-
-/*
-// TODO: don't embed passwords like this
-$mysqli = new mysqli("localhost", "markfina_admin", "T3st!!", "markfina_licensing");
-if (mysqli_connect_errno())
+function user_registration()
 {
-    echo mysqli_connect_error();
+	header('Content-Type: application/json');
+
+	$password = explode("\n", file_get_contents('phppasswd'));
+
+	$connection = new PDO('mysql:host=localhost;dbname=markfina_licensing;charset=utf8', 'markfina_php', $password[0]);
+
+	$matching_users = $connection->prepare('SELECT COUNT(*) FROM users WHERE email=:email');
+	$matching_users->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+	$matching_users->execute();
+	if (0 == $matching_users->fetchColumn())
+	{
+		echo json_encode('Can register '.$_POST['email']);
+	}
+	else
+	{
+		echo json_encode('Already registered');
+	}
+
+	$connection = null;
 }
 
-if ($result = $mysqli->query("SELECT DATABASE()"))
+if ($_SERVER['REQUEST_URI'] === '/api/v1/register')
 {
-    $row = $result->fetch_row();
-    echo $row[0];
-    $result->close();
+	user_registration();
 }
-
-$mysqli->close();
-
-$new_array = $GLOBALS;
-$index = array_search('GLOBALS',array_keys($new_array));
-echo json_encode(array_splice($new_array, $index, $index-1), JSON_PRETTY_PRINT);
-echo json_encode($_SERVER, JSON_PRETTY_PRINT);
-echo json_encode($_REQUEST, JSON_PRETTY_PRINT);
-echo json_encode($_SESSION, JSON_PRETTY_PRINT);
-echo json_encode($_ENV, JSON_PRETTY_PRINT);
-*/
+else
+{
+    header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
+    echo json_encode('Unrecognized path: '.$_SERVER['REQUEST_URI']);
+}
 ?>
