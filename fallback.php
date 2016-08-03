@@ -33,7 +33,7 @@ function user_registration()
 	$matching_users->execute();
 	if (0 == $matching_users->fetchColumn())
 	{
-		$insert_user = $connection->prepare("INSERT INTO users (email) VALUES (:email)");
+		$insert_user = $connection->prepare('INSERT INTO users (email) VALUES (:email)');
 		$insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
 		$insert_user->execute();
 
