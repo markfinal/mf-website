@@ -23,21 +23,26 @@ function fatal_handler()
 
 function user_registration()
 {
-	header('Content-Type: application/json');
-
 	$password = explode("\n", file_get_contents('phppasswd'));
 
 	$connection = new PDO('mysql:host=localhost;dbname=markfina_licensing;charset=utf8', 'markfina_php', $password[0]);
+	$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 	$matching_users = $connection->prepare('SELECT COUNT(*) FROM users WHERE email=:email');
 	$matching_users->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
 	$matching_users->execute();
 	if (0 == $matching_users->fetchColumn())
 	{
-		echo json_encode('Can register '.$_POST['email']);
+		$insert_user = $connection->prepare("INSERT INTO users (email) VALUES (:email)");
+		$insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+		$insert_user->execute();
+
+		header('Content-Type: application/json', true, 201);
+		echo json_encode('Registered '.$_POST['email']);
 	}
 	else
 	{
+		header('Content-Type: application/json', true, 500);
 		echo json_encode('Already registered');
 	}
 
