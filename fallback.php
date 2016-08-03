@@ -23,8 +23,13 @@ function fatal_handler()
 
 header('Content-Type: application/json');
 
-echo jso_encode('Hello', JSON_PRETTY_PRINT);
+$password=explode("\n", file_get_contents('phppasswd'));
+
+$connection = new PDO('mysql:host=localhost;dbname=markfina_licensing;charset=utf8', 'markfina_php', $password[0]);
+
+echo json_encode('Hello', JSON_PRETTY_PRINT);
 echo json_encode($_SERVER['REQUEST_URI'], JSON_PRETTY_PRINT);
+echo json_encode($_POST, JSON_PRETTY_PRINT);
 
 /*
 // TODO: don't embed passwords like this
