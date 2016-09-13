@@ -25,25 +25,43 @@ function user_registration()
 {
 	$password = explode("\n", file_get_contents('phppasswd'));
 
-	$connection = new PDO('mysql:host=localhost;dbname=markfina_licensing;charset=utf8', 'markfina_php', $password[0]);
+	$connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
 	$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$matching_users = $connection->prepare('SELECT COUNT(*) FROM users WHERE email=:email');
+	// determine if there is an existing user
+	$matching_users = $connection->prepare('SELECT COUNT(*) FROM User WHERE email=:email');
 	$matching_users->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
 	$matching_users->execute();
 	if (0 == $matching_users->fetchColumn())
 	{
-		$insert_user = $connection->prepare('INSERT INTO users (email) VALUES (:email)');
+		// generate a public/private key for the new user
+		$private_key_resource = openssl_pkey_new();
+		openssl_pkey_export($private_key_resource, $private_key);
+
+		// add the user into the db
+		$insert_user = $connection->prepare('INSERT INTO User (email,privatekey) VALUES (:email,:private_key)');
 		$insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+		$insert_user->bindParam(':private_key', $private_key, PDO::PARAM_STR);
 		$insert_user->execute();
 
+		$private_key_details = openssl_pkey_get_details($private_key_resource);
+		$public_key = $private_key_details['key'];
+
 		header('Content-Type: application/json', true, 201);
-		echo json_encode('Registered '.$_POST['email']);
+
+		$response = array();
+		$response['success'] = 'yes';
+		$response['email'] = $_POST['email'];
+		$response['publickey'] = $public_key;
+		echo json_encode($response);
 	}
 	else
 	{
 		header('Content-Type: application/json', true, 500);
-		echo json_encode('Already registered');
+		$response = array();
+		$response['success'] = 'no';
+		$response['email'] = $_POST['email'];
+		echo json_encode($response);
 	}
 
 	$connection = null;
