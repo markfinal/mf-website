@@ -47,6 +47,18 @@ function user_registration()
 		$private_key_details = openssl_pkey_get_details($private_key_resource);
 		$public_key = $private_key_details['key'];
 
+		// send the public key as an email attachment
+		$to = $_POST['email'];
+		$subject = 'Access';
+		$message = 'Please copy this to your home directory';
+		/* TODO: fix when there is a known 'from' email address
+		$headers = 'From: webmaster@markfinal.me.uk'.'\r\n'.
+		'Reply-To: webmaster@markfinal.me.uk'.'\r\n'.
+		'X-Mailer: PHP/'.phpversion();
+		*/
+		$mail_sent = mail($to, $subject, $message);//, $headers);
+		error_log($mail_sent ? 'Mail was sent' : 'Mail failed, '.error_get_last());
+
 		header('Content-Type: application/json', true, 201);
 
 		$response = array();
