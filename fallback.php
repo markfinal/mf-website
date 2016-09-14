@@ -30,10 +30,32 @@ function send_email($to, $subject)
 	// note: for both header and message body, the EOL characters must be enclosed in
 	// double quotes, in order for PHP to interpret these as carriage return and line feeds
 
+	/* this is an alternative multipart message
 	// the header
 	$header = array();
 	$header[] = 'MIME-Version: 1.0';
 	$header[] = 'Content-Type: multipart/alternative; boundary="'.$boundary.'"';
+	$header[] = 'From: '.$from;
+	$header[] = 'Reply-To: '.$from;
+	$header[] = 'X-Mailer: PHP/'.phpversion();
+
+	// the message body
+	$message = 'This is a MIME encoded message.'."\r\n\r\n";
+	$message .= '--'.$boundary."\r\n";
+	$message .= 'Content-type: text/plain;charset=utf-8'."\r\n";
+	$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
+	$message .= "\r\n";
+	$message .= 'Some plain text here'."\r\n\r\n";
+	$message .= '--'.$boundary."\r\n";
+	$message .= 'Content-Type: text/html;charset=utf-8'."\r\n";
+	$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
+	$message .= "\r\n";
+	$message .= '<html><body>Hello world</body></html>'."\r\n\r\n";
+	$message .= '--'.$boundary.'--';
+	*/
+	$header = array();
+	$header[] = 'MIME-Version: 1.0';
+	$header[] = 'Content-Type: multipart/mixed; boundary="'.$boundary.'"';
 	$header[] = 'From: '.$from;
 	$header[] = 'Reply-To: '.$from;
 	$header[] = 'X-Mailer: PHP/'.phpversion();
