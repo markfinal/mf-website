@@ -142,7 +142,11 @@ if ($_SERVER['REQUEST_URI'] === '/api/v1/register')
 }
 else
 {
+    $response = array();
+    $response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'];
+
     header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
-    echo json_encode('Unrecognized path: '.$_SERVER['REQUEST_URI']);
+    header('Content-Type: application/json', true);
+    echo json_encode($response);
 }
 ?>
