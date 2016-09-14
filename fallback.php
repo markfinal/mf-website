@@ -1,5 +1,6 @@
 <?php
 require 'send_email.php';
+require 'validateuser.php';
 
 register_shutdown_function( "fatal_handler" );
 
@@ -71,13 +72,17 @@ function user_registration()
         echo json_encode($response);
     }
 
-    $connection = null;
+    unset($connection);
 }
 
 switch ($_SERVER['REQUEST_URI'])
 {
     case '/api/v1/register':
         user_registration();
+        break;
+
+    case '/api/v1/validateuser':
+        validateuser();
         break;
 
     default:
