@@ -21,6 +21,43 @@ function fatal_handler()
   }
 }
 
+function send_email($to, $subject)
+{
+	$from = 'Mark Final <mark@markfinal.me.uk>';
+
+	$boundary = uniqid('np');
+
+	// note: for both header and message body, the EOL characters must be enclosed in
+	// double quotes, in order for PHP to interpret these as carriage return and line feeds
+
+	// the header
+	$header = array();
+	$header[] = 'MIME-Version: 1.0';
+	$header[] = 'Content-Type: multipart/alternative; boundary="'.$boundary.'"';
+	$header[] = 'From: '.$from;
+	$header[] = 'Reply-To: '.$from;
+	$header[] = 'X-Mailer: PHP/'.phpversion();
+
+	// the message body
+	$message = 'This is a MIME encoded message.'."\r\n\r\n";
+	$message .= '--'.$boundary."\r\n";
+	$message .= 'Content-type: text/plain;charset=utf-8'."\r\n";
+	$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
+	$message .= "\r\n";
+	$message .= 'Some plain text here'."\r\n\r\n";
+	$message .= '--'.$boundary."\r\n";
+	$message .= 'Content-Type: text/html;charset=utf-8'."\r\n";
+	$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
+	$message .= "\r\n";
+	$message .= '<html><body>Hello world</body></html>'."\r\n\r\n";
+	$message .= '--'.$boundary.'--';
+
+	// actually send the mail
+	$mail_sent = mail($to, $subject, $message, implode("\r\n", $header), '-v');
+
+	error_log($mail_sent ? 'Mail was sent' : 'Mail failed, '.error_get_last());
+}
+
 function user_registration()
 {
 	$password = explode("\n", file_get_contents('phppasswd'));
@@ -50,39 +87,7 @@ function user_registration()
 		$public_key = $private_key_details['key'];
 
 		// send the public key as an email attachment
-		$to = $_POST['email'];
-		$subject = 'Access';
-		$boundary = uniqid('np');
-
-		// note: for both header and message body, the EOL characters must be enclosed in
-		// double quotes, in order for PHP to interpret these as carriage return and line feeds
-
-		// the header
-		$header = array();
-		$header[] = 'MIME-Version: 1.0';
-		$header[] = 'Content-Type: multipart/alternative; boundary="'.$boundary.'"';
-		$header[] = 'From: Mark Final <mark@markfinal.me.uk>';
-		$header[] = 'Reply-To: Mark Final <mark@markfinal.me.uk>';
-		$header[] = 'X-Mailer: PHP/'.phpversion();
-
-		// the message body
-		$message = 'This is a MIME encoded message.'."\r\n\r\n";
-		$message .= '--'.$boundary."\r\n";
-		$message .= 'Content-type: text/plain;charset=utf-8'."\r\n";
-		$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
-		$message .= "\r\n";
-		$message .= 'Some plain text here'."\r\n\r\n";
-		$message .= '--'.$boundary."\r\n";
-		$message .= 'Content-Type: text/html;charset=utf-8'."\r\n";
-		$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
-		$message .= "\r\n";
-		$message .= '<html><body>Hello world</body></html>'."\r\n\r\n";
-		$message .= '--'.$boundary.'--';
-
-		// actually send the mail
-		$mail_sent = mail($to, $subject, $message, implode("\r\n", $header), '-v');
-
-		error_log($mail_sent ? 'Mail was sent' : 'Mail failed, '.error_get_last());
+		send_email($_POST['email'], 'Access');
 
 		header('Content-Type: application/json', true, 201);
 
