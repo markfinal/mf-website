@@ -21,7 +21,7 @@ function fatal_handler()
   }
 }
 
-function send_email($to, $subject)
+function send_email($to, $subject, $message, $attachments=array())
 {
 	$from = 'Mark Final <mark@markfinal.me.uk>';
 
@@ -66,12 +66,17 @@ function send_email($to, $subject)
 	$message .= 'Content-type: text/plain;charset=utf-8'."\r\n";
 	$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
 	$message .= "\r\n";
-	$message .= 'Some plain text here'."\r\n\r\n";
-	$message .= '--'.$boundary."\r\n";
-	$message .= 'Content-Type: text/html;charset=utf-8'."\r\n";
-	$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
-	$message .= "\r\n";
-	$message .= '<html><body>Hello world</body></html>'."\r\n\r\n";
+	$message .= $message."\r\n\r\n";
+	foreach ($attachments as $key => $value)
+	{
+		$message .= '--'.$boundary."\r\n";
+		$message .= 'Content-Type: text/plain;name="'.$key.'"'."\r\n";
+		$message .= 'Content-Transfer-Encoding: base64'."\r\n";
+		$message .= 'Content-Disposition: attachment'."\r\n";
+		$message .= "\r\n";
+		$content = chunk_split(base64_encode($value));
+		$message .= $content."\r\n\r\n";
+	}
 	$message .= '--'.$boundary.'--';
 
 	// actually send the mail
@@ -109,7 +114,7 @@ function user_registration()
 		$public_key = $private_key_details['key'];
 
 		// send the public key as an email attachment
-		send_email($_POST['email'], 'Access');
+		send_email($_POST['email'], 'Access', 'Please find attached...', array('publickey.txt'=>$public_key));
 
 		header('Content-Type: application/json', true, 201);
 
