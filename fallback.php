@@ -39,10 +39,12 @@ function user_registration()
 		openssl_pkey_export($private_key_resource, $private_key);
 
 		// add the user into the db
+		/* TEMPORARILY DISABLE DURING MAIL TESTS
 		$insert_user = $connection->prepare('INSERT INTO User (email,privatekey) VALUES (:email,:private_key)');
 		$insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
 		$insert_user->bindParam(':private_key', $private_key, PDO::PARAM_STR);
 		$insert_user->execute();
+		*/
 
 		$private_key_details = openssl_pkey_get_details($private_key_resource);
 		$public_key = $private_key_details['key'];
@@ -50,13 +52,36 @@ function user_registration()
 		// send the public key as an email attachment
 		$to = $_POST['email'];
 		$subject = 'Access';
-		$message = 'Please copy this to your home directory';
-		/* TODO: fix when there is a known 'from' email address
-		$headers = 'From: webmaster@markfinal.me.uk'.'\r\n'.
-		'Reply-To: webmaster@markfinal.me.uk'.'\r\n'.
-		'X-Mailer: PHP/'.phpversion();
-		*/
-		$mail_sent = mail($to, $subject, $message);//, $headers);
+		$boundary = uniqid('np');
+
+		// note: for both header and message body, the EOL characters must be enclosed in
+		// double quotes, in order for PHP to interpret these as carriage return and line feeds
+
+		// the header
+		$header = array();
+		$header[] = 'MIME-Version: 1.0';
+		$header[] = 'Content-Type: multipart/alternative; boundary="'.$boundary.'"';
+		$header[] = 'From: Mark Final <mark@markfinal.me.uk>';
+		$header[] = 'Reply-To: Mark Final <mark@markfinal.me.uk>';
+		$header[] = 'X-Mailer: PHP/'.phpversion();
+
+		// the message body
+		$message = 'This is a MIME encoded message.'."\r\n\r\n";
+		$message .= '--'.$boundary."\r\n";
+		$message .= 'Content-type: text/plain;charset=utf-8'."\r\n";
+		$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
+		$message .= "\r\n";
+		$message .= 'Some plain text here'."\r\n\r\n";
+		$message .= '--'.$boundary."\r\n";
+		$message .= 'Content-Type: text/html;charset=utf-8'."\r\n";
+		$message .= 'Content-Transfer-Encoding: 7bit'."\r\n";
+		$message .= "\r\n";
+		$message .= '<html><body>Hello world</body></html>'."\r\n\r\n";
+		$message .= '--'.$boundary.'--';
+
+		// actually send the mail
+		$mail_sent = mail($to, $subject, $message, implode("\r\n", $header), '-v');
+
 		error_log($mail_sent ? 'Mail was sent' : 'Mail failed, '.error_get_last());
 
 		header('Content-Type: application/json', true, 201);
