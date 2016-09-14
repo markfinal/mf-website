@@ -136,17 +136,20 @@ function user_registration()
 	$connection = null;
 }
 
-if ($_SERVER['REQUEST_URI'] === '/api/v1/register')
+switch ($_SERVER['REQUEST_URI'])
 {
-	user_registration();
-}
-else
-{
-    $response = array();
-    $response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'];
+	case '/api/v1/register':
+		user_registration();
+		break;
 
-    header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
-    header('Content-Type: application/json', true);
-    echo json_encode($response);
+	default:
+	{
+		$response = array();
+		$response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'];
+
+		header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
+		header('Content-Type: application/json', true);
+		echo json_encode($response);
+	}
 }
 ?>
