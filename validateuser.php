@@ -6,7 +6,7 @@ function validateuser()
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if (in_array('publickey', $_POST))
+    if (array_key_exists('publickey', $_POST))
     {
         $response = array();
         $response['errormessage'] = 'Cannot yet handle public keys';
