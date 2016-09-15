@@ -2,8 +2,8 @@
 require 'send_email.php';
 require 'validateuser.php';
 
+// TODO: is this shutdown function needed now that there is an exception handler?
 register_shutdown_function( "fatal_handler" );
-
 function fatal_handler()
 {
   $errfile = "unknown file";
@@ -22,6 +22,17 @@ function fatal_handler()
     header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
     echo json_encode($errstr);
   }
+}
+
+// note that in PHP 7.0 this also copes with Errors, such as uncaught errors
+set_exception_handler('handler');
+function handler(Throwable $e)
+{
+    error_log("$e");
+    header('HTTP/1.1 500 Internal Server Error', true, 500);
+    header('Content-Type: application/json');
+    echo json_encode(["errormessage" => 'Server error']);
+    exit;
 }
 
 function user_registration()
