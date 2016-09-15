@@ -1,6 +1,7 @@
 <?php
 require 'send_email.php';
 require 'validateuser.php';
+require 'registeruser.php';
 
 // TODO: is this shutdown function needed now that there is an exception handler?
 register_shutdown_function( "fatal_handler" );
@@ -86,24 +87,39 @@ function user_registration()
     unset($connection);
 }
 
-switch ($_SERVER['REQUEST_URI'])
+try
 {
-    case '/api/v1/register':
-        user_registration();
-        break;
-
-    case '/api/v1/validateuser':
-        validateuser();
-        break;
-
-    default:
+    switch ($_SERVER['REQUEST_URI'])
     {
-        $response = array();
-        $response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'];
+        case '/api/v1/register':
+            user_registration();
+            break;
 
-        header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
-        header('Content-Type: application/json', true);
-        echo json_encode($response);
+        case '/api/v1/validateuser':
+            validateuser();
+            break;
+
+        case '/api/v1/registeruser':
+            registeruser();
+            break;
+
+        default:
+        {
+            $response = array();
+            $response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'];
+
+            header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
+            header('Content-Type: application/json', true);
+            echo json_encode($response);
+        }
     }
+}
+catch (Exception $e)
+{
+    $response = array();
+    $response['errormessage'] = $e->getMessage();
+
+    header('Content-Type: application/json', true, 500);
+    echo json_encode($response);
 }
 ?>
