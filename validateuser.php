@@ -39,12 +39,17 @@ function validateuser()
         $get_private_key->bindparam(':email', $_POST['email'], PDO::PARAM_STR);
         $get_private_key->execute();
 
-        $pkey = $get_private_key->fetchColumn(0);
+        $pkey_str = $get_private_key->fetchColumn(0);
+        $pkey_resource = openssl_pkey_get_private($pkey_str);
 
-        $private_key_details = openssl_pkey_get_details($private_key_resource);
-        $public_key = $private_key_details['key'];
+        $private_key_details = openssl_pkey_get_details($pkey_resource);
+        $public_keyDB = $private_key_details['key'];
 
-        $response['publickeyvalid'] = (0 == strcmp($public_key, $_POST['publickey']));
+        $public_keyPO = $_POST['publickey'];
+
+        $compare = strcmp($public_keyDB, $public_keyPO);
+
+        $response['publickeyvalid'] = (0 == $compare);
 
         header('Content-Type: application/json', true, 201);
         echo json_encode($response);
