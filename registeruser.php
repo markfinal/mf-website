@@ -15,6 +15,7 @@ function registeruser()
         echo json_encode($response);
         return;
     }
+    $emailaddress = $_POST['email'];
 
     // generate a public/private key for the new user
     $private_key_resource = openssl_pkey_new();
@@ -36,7 +37,7 @@ function registeruser()
     }
 
     $insert_user = $connection->prepare('INSERT INTO User (email,privatekey) VALUES (:email,:private_key)');
-    $insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+    $insert_user->bindParam(':email', $emailaddress, PDO::PARAM_STR);
     $insert_user->bindParam(':private_key', $private_key, PDO::PARAM_STR);
     try
     {
@@ -47,7 +48,7 @@ function registeruser()
         if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
         {
             $response = array();
-            $response['errormessage'] = 'Email address '.$_POST['email'].' was already registered';
+            $response['errormessage'] = 'Email address '.$emailaddress.' was already registered';
 
             header('Content-Type: application/json', true, 409);
             echo json_encode($response);
@@ -64,7 +65,9 @@ function registeruser()
 
     $response = array();
     $response['userid'] = $userid;
-    $response['publickey'] = $public_key;
+    $response['publickey'] = $public_key; // TODO: remove this eventually
+
+    send_email($emailaddress, 'User registration', 'Please find your public key attached', array('publickey.txt'=>$public_key));
 
     header('Content-Type: application/json', true, 201);
     echo json_encode($response);
