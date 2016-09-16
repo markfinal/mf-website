@@ -1,4 +1,13 @@
 <?php
+function var_dump_error_log($object)
+{
+    ob_start();
+    var_dump($object);
+    $contents = ob_get_contents();
+    ob_end_clean();
+    error_log($contents);
+}
+
 function validateuser()
 {
     if (!array_key_exists('email', $_POST))
