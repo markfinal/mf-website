@@ -1,7 +1,7 @@
 <?php
-require 'send_email.php';
-require 'validateuser.php';
-require 'registeruser.php';
+require_once 'send_email.php';
+require_once 'validateuser.php';
+require_once 'registeruser.php';
 
 // TODO: is this shutdown function needed now that there is an exception handler?
 register_shutdown_function( "fatal_handler" );

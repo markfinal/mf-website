@@ -1,5 +1,7 @@
 <?php
 
+require_once 'send_email.php';
+
 define('MYSQL_ERRCODE_DUPLICATE_KEY', 1062);
 
 function registeruser()
