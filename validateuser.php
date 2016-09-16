@@ -51,14 +51,14 @@ function validateuser()
 
         $response['publickeyvalid'] = (0 == $compare);
 
-        header('Content-Type: application/json', true, 201);
+        header('Content-Type: application/json', true, 200);
         echo json_encode($response);
     }
     else
     {
         $response['publickeyvalid'] = false;
 
-        header('Content-Type: application/json', true, 201);
+        header('Content-Type: application/json', true, 200);
         echo json_encode($response);
     }
 
