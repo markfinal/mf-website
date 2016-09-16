@@ -2,6 +2,7 @@
 require_once 'send_email.php';
 require_once 'validateuser.php';
 require_once 'registeruser.php';
+require_once 'validatemachine.php';
 
 // TODO: is this shutdown function needed now that there is an exception handler?
 register_shutdown_function( "fatal_handler" );
@@ -101,6 +102,10 @@ try
 
         case '/api/v1/registeruser':
             registeruser();
+            break;
+
+        case '/api/v1/validatemachine':
+            validatemachine();
             break;
 
         default:
