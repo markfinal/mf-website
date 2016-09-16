@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 14, 2016 at 01:36 PM
--- Server version: 5.7.13-0ubuntu0.16.04.2
+-- Generation Time: Sep 16, 2016 at 12:55 PM
+-- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -76,7 +76,8 @@ ALTER TABLE `MachineOwner`
 -- Indexes for table `User`
 --
 ALTER TABLE `User`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -96,7 +97,7 @@ ALTER TABLE `MachineOwner`
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
