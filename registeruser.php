@@ -1,4 +1,7 @@
 <?php
+
+define('MYSQL_ERRCODE_DUPLICATE_KEY', 1062);
+
 function registeruser()
 {
     if (!array_key_exists('email', $_POST))
@@ -33,7 +36,23 @@ function registeruser()
     $insert_user = $connection->prepare('INSERT INTO User (email,privatekey) VALUES (:email,:private_key)');
     $insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
     $insert_user->bindParam(':private_key', $private_key, PDO::PARAM_STR);
-    $insert_user->execute();
+    try
+    {
+        $insert_user->execute();
+    }
+    catch (PDOException $e)
+    {
+        if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
+        {
+            $response = array();
+            $response['errormessage'] = 'Email address '.$_POST['email'].' was already registered';
+
+            header('Content-Type: application/json', true, 409);
+            echo json_encode($response);
+            return;
+        }
+        throw $e;
+    }
     $userid = intval($connection->lastInsertId());
 
     $connection->commit();
