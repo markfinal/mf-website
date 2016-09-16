@@ -15,7 +15,7 @@ function validateuser()
         $response = array();
         $response['errormessage'] = 'An email address must be provided';
 
-        header('Content-Type: application/json', true, 500);
+        header('Content-Type: application/json', true, 400);
         echo json_encode($response);
         return;
     }
