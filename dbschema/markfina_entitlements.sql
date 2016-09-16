@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 16, 2016 at 12:55 PM
+-- Generation Time: Sep 16, 2016 at 05:20 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `HostMachine` (
   `id` int(11) NOT NULL,
   `MAC` varchar(64) NOT NULL,
-  `RevokeReason` varchar(4096) NOT NULL
+  `RevokeReason` varchar(4096) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -64,7 +64,8 @@ CREATE TABLE `User` (
 -- Indexes for table `HostMachine`
 --
 ALTER TABLE `HostMachine`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `MAC` (`MAC`);
 
 --
 -- Indexes for table `MachineOwner`
@@ -97,7 +98,7 @@ ALTER TABLE `MachineOwner`
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
