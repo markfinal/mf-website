@@ -41,26 +41,6 @@ function validateuser()
         echo json_encode($response);
         return;
     }
-    if (!array_key_exists('publickey', $_POST))
-    {
-        $response = array();
-        $response['errormessage'] = 'The public key associated with the email address must be provided';
-        $response['errorcode'] = ERR_PUBLICKEY_NOT_SPECIFIED;
-
-        header('Content-Type: application/json', true, 400);
-        echo json_encode($response);
-        return;
-    }
-    if (!array_key_exists('MAC', $_POST))
-    {
-        $response = array();
-        $response['errormessage'] = 'The MAC address of the computer must be provided';
-        $response['errorcode'] = ERR_MAC_ADDRESS_NOT_SPECIFIED;
-
-        header('Content-Type: application/json', true, 400);
-        echo json_encode($response);
-        return;
-    }
 
     $password = explode("\n", file_get_contents('phppasswd'));
 
@@ -83,6 +63,17 @@ function validateuser()
         return;
     }
 
+    if (!array_key_exists('publickey', $_POST))
+    {
+        $response = array();
+        $response['errormessage'] = 'The public key associated with the email address must be provided';
+        $response['errorcode'] = ERR_PUBLICKEY_NOT_SPECIFIED;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
+
     // is the public key correct?
     $pkey_str = $query_user->fetchColumn(1);
     $pkey_resource = openssl_pkey_get_private($pkey_str);
@@ -100,6 +91,17 @@ function validateuser()
         $response['errorcode'] = ERR_INCORRECT_PUBLICKEY;
 
         header('Content-Type: application/json', true, 403);
+        echo json_encode($response);
+        return;
+    }
+
+    if (!array_key_exists('MAC', $_POST))
+    {
+        $response = array();
+        $response['errormessage'] = 'The MAC address of the computer must be provided';
+        $response['errorcode'] = ERR_MAC_ADDRESS_NOT_SPECIFIED;
+
+        header('Content-Type: application/json', true, 400);
         echo json_encode($response);
         return;
     }
