@@ -35,6 +35,8 @@ function expireMachineAuthorisationLinks()
 
 function authorisemachine($url)
 {
+    expireMachineAuthorisationLinks();
+
     $password = explode("\n", file_get_contents('phppasswd'));
 
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
@@ -64,31 +66,50 @@ function authorisemachine($url)
     $fetch_user_id = $connection->prepare('SELECT id FROM User WHERE email=:email');
     $fetch_user_id->bindParam(':email', $request['email'], PDO::PARAM_STR);
     $fetch_user_id->execute();
+    $user_id = $fetch_user_id->fetchColumn(0);
 
     $fetch_host_id = $connection->prepare('SELECT id FROM Host WHERE MAC=:MAC');
     $fetch_host_id->bindParam(':MAC', $request['MAC'], PDO::PARAM_STR);
     $fetch_host_id->execute();
+    $host_id = $fetch_host_id->fetchColumn(0);
 
-    $insert_user_machine_association = $connection->prepare('INSERT INTO UserHostMachine (user,host) VALUES (user=:user,host=:host)');
-    $insert_user_machine_association->bindParam(':user', $fetch_user_id->fetchColumn(0), PDO::PARAM_INT);
-    $insert_user_machine_association->bindParam(':host', $fetch_host_id->fetchColumn(0), PDO::PARAM_INT);
-    $insert_user_machine_association->execute();
-    $user_machine_id = $insert_user_machine_association->fetchColumn(0);
-    if (0 == $user_machine_id)
+    if (!$connection->beginTransaction())
     {
         $response = array();
-        $response['errormessage'] = 'The MAC address is not associated with the user';
-        $response['errorcode'] = ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER;
+        $response['errormessage'] = 'Could not start a transaction';
 
-        header('Content-Type: application/json', true, 404);
+        header('Content-Type: application/json', true, 500);
         echo json_encode($response);
         return;
     }
 
-    // TODO: delete the authorisation request
-    // TODO: write some nice HTML
+    $insert_user_machine_association = $connection->prepare('INSERT INTO UserHostMachine (user,host) VALUES (:user,:host)');
+    $insert_user_machine_association->bindParam(':user', $user_id, PDO::PARAM_INT);
+    $insert_user_machine_association->bindParam(':host', $host_id, PDO::PARAM_INT);
+    try
+    {
+        $insert_user_machine_association->execute();
+    }
+    catch (PDOException $e)
+    {
+        throw $e;
+    }
 
-    $message .= '<p>Id was '.$request['id'].'</p>';
+    $delete_request = $connection->prepare("DELETE FROM UserHostMachineRequest WHERE Id=:id");
+    $delete_request->bindParam(':id', $request['id'], PDO::PARAM_INT);
+    try
+    {
+        $delete_request->execute();
+    }
+    catch (PDOException $e)
+    {
+        throw $e;
+    }
+
+    $connection->commit();
+
+    // TODO: write some nice HTML
+    $message .= '<p>Machine with MAC address '.$request['MAC'].' has been authorised for use for '.$request['email'].'</p>';
     $message .= $html_suffix;
 
     header('Content-Type: text/html', true, 200);
