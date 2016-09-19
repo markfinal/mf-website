@@ -1,4 +1,6 @@
 <?php
+require_once 'errorcodes.php';
+
 function var_dump_error_log($object)
 {
     ob_start();
@@ -7,15 +9,6 @@ function var_dump_error_log($object)
     ob_end_clean();
     error_log($contents);
 }
-
-define('ERR_EMAIL_NOT_SPECIFIED', 1);
-define('ERR_EMAIL_INCORRECT_FORMAT', 2);
-define('ERR_PUBLICKEY_NOT_SPECIFIED', 3);
-define('ERR_MAC_ADDRESS_NOT_SPECIFIED', 4);
-define('ERR_UNKNOWN_EMAIL', 5);
-define('ERR_INCORRECT_PUBLICKEY', 6);
-define('ERR_UNKNOWN_MAC_ADDRESS', 7);
-define('ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER', 8);
 
 // Validate a user can progress to acquire a license, given their email address, public key, and MAC address.
 // Returns an expiring security token.

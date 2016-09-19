@@ -1,8 +1,7 @@
 <?php
 
 require_once 'send_email.php';
-
-define('MYSQL_ERRCODE_DUPLICATE_KEY', 1062);
+require_once 'errorcodes.php';
 
 function registeruser()
 {
@@ -10,21 +9,31 @@ function registeruser()
     {
         $response = array();
         $response['errormessage'] = 'An email address must be provided';
+        $response['errorcode'] = ERR_EMAIL_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
         return;
     }
-    $emailaddress = $_POST['email'];
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+    {
+        $response = array();
+        $response['errormessage'] = 'The email address used an incorrect format';
+        $response['errorcode'] = ERR_EMAIL_INCORRECT_FORMAT;
 
-    // generate a public/private key for the new user
-    $private_key_resource = openssl_pkey_new();
-    openssl_pkey_export($private_key_resource, $private_key);
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
 
     $password = explode("\n", file_get_contents('phppasswd'));
 
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // generate a public/private key for the new user
+    $private_key_resource = openssl_pkey_new();
+    openssl_pkey_export($private_key_resource, $private_key);
 
     if (!$connection->beginTransaction())
     {
@@ -48,7 +57,8 @@ function registeruser()
         if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
         {
             $response = array();
-            $response['errormessage'] = 'Email address '.$emailaddress.' was already registered';
+            $response['errormessage'] = 'The email address is already in use';
+            $response['errorcode'] = ERR_EMAIL_ALREADY_INUSE;
 
             header('Content-Type: application/json', true, 409);
             echo json_encode($response);
@@ -65,7 +75,6 @@ function registeruser()
 
     $response = array();
     $response['userid'] = $userid;
-    $response['publickey'] = $public_key; // TODO: remove this eventually
 
     send_email($emailaddress, 'User registration', 'Please find your public key attached', array('publickey.txt'=>$public_key));
 
