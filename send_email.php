@@ -1,5 +1,5 @@
 <?php
-function send_email($to, $subject, $message, $attachments=array())
+function send_email($to, $subject, $body, $attachments=array())
 {
     $from = 'Mark Final <mark@markfinal.me.uk>';
 
@@ -31,6 +31,7 @@ function send_email($to, $subject, $message, $attachments=array())
     $message .= '<html><body>Hello world</body></html>'."\r\n\r\n";
     $message .= '--'.$boundary.'--';
     */
+    /*
     $header = array();
     $header[] = 'MIME-Version: 1.0';
     $header[] = 'Content-Type: multipart/mixed; boundary="'.$boundary.'"';
@@ -56,9 +57,17 @@ function send_email($to, $subject, $message, $attachments=array())
         $message .= $content."\r\n\r\n";
     }
     $message .= '--'.$boundary.'--';
+    */
+
+    $header = array();
+    $header[] = 'MIME-Version: 1.0';
+    $header[] = 'Content-Type: text/html; charset=utf-8';
+    $header[] = 'From: '.$from;
+    $header[] = 'Reply-To: '.$from;
+    $header[] = 'X-Mailer: PHP/'.phpversion();
 
     // actually send the mail
-    $mail_sent = mail($to, $subject, $message, implode("\r\n", $header), '-v');
+    $mail_sent = mail(strip_tags($to), $subject, $body, implode("\r\n", $header), '-v');
 
     error_log($mail_sent ? 'Mail was sent' : 'Mail failed, '.error_get_last());
 }

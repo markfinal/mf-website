@@ -41,7 +41,7 @@ function validateuser()
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // is the email address known?
-    $query_user = $connection->prepare('SELECT id,privatekey FROM User WHERE email=:email');
+    $query_user = $connection->prepare('SELECT id FROM User WHERE email=:email');
     $query_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
     $query_user->execute();
     $user_id = $query_user->fetchColumn(0);
@@ -52,38 +52,6 @@ function validateuser()
         $response['errorcode'] = ERR_UNKNOWN_EMAIL;
 
         header('Content-Type: application/json', true, 404);
-        echo json_encode($response);
-        return;
-    }
-
-    if (!array_key_exists('publickey', $_POST))
-    {
-        $response = array();
-        $response['errormessage'] = 'The public key associated with the email address must be provided';
-        $response['errorcode'] = ERR_PUBLICKEY_NOT_SPECIFIED;
-
-        header('Content-Type: application/json', true, 400);
-        echo json_encode($response);
-        return;
-    }
-
-    // is the public key correct?
-    $pkey_str = $query_user->fetchColumn(1);
-    $pkey_resource = openssl_pkey_get_private($pkey_str);
-
-    $private_key_details = openssl_pkey_get_details($pkey_resource);
-    $public_keyDB = $private_key_details['key'];
-
-    $public_keyPO = $_POST['publickey'];
-
-    $compare = strcmp($public_keyDB, $public_keyPO);
-    if (0 != $compare)
-    {
-        $response = array();
-        $response['errormessage'] = 'The public key provided was not correct for the user';
-        $response['errorcode'] = ERR_INCORRECT_PUBLICKEY;
-
-        header('Content-Type: application/json', true, 403);
         echo json_encode($response);
         return;
     }
@@ -100,10 +68,10 @@ function validateuser()
     }
 
     // is the MAC address known about?
-    $query_host_machine = $connection->prepare('SELECT id FROM HostMachine WHERE MAC=:MAC');
-    $query_host_machine->bindParam(':MAC', $_POST['MAC'], PDO::PARAM_STR);
-    $query_host_machine->execute();
-    $host_id = $query_host_machine->fetchColumn(0);
+    $find_host = $connection->prepare('SELECT id FROM Host WHERE MAC=:MAC');
+    $find_host->bindParam(':MAC', $_POST['MAC'], PDO::PARAM_STR);
+    $find_host->execute();
+    $host_id = $find_host->fetchColumn(0);
     if (0 == $host_id)
     {
         $response = array();
@@ -116,12 +84,12 @@ function validateuser()
     }
 
     // is the MAC address associated to the user?
-    $query_tied_machine = $connection->prepare('SELECT id FROM MachineOwner WHERE user=:user AND host=:host');
-    $query_host_machine->bindParam(':user', $user_id, PDO::PARAM_INT);
-    $query_host_machine->bindParam(':host', $host_id, PDO::PARAM_INT);
-    $query_host_machine->execute();
-    $host_machine_id = $query_host_machine->fetchColumn(0);
-    if (0 == $host_machine_id)
+    $find_user_machine_association = $connection->prepare('SELECT id FROM UserHostMachine WHERE user=:user AND host=:host');
+    $find_user_machine_association->bindParam(':user', $user_id, PDO::PARAM_INT);
+    $find_user_machine_association->bindParam(':host', $host_id, PDO::PARAM_INT);
+    $find_user_machine_association->execute();
+    $user_machine_id = $find_user_machine_association->fetchColumn(0);
+    if (0 == $user_machine_id)
     {
         $response = array();
         $response['errormessage'] = 'The MAC address is not associated with the user';

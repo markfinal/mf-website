@@ -1,6 +1,6 @@
 <?php
 
-require_once 'send_email.php';
+//require_once 'send_email.php';
 require_once 'errorcodes.php';
 
 function registeruser()
@@ -25,15 +25,21 @@ function registeruser()
         echo json_encode($response);
         return;
     }
+    if (!array_key_exists('publickey', $_POST))
+    {
+        $response = array();
+        $response['errormessage'] = 'A public key must be provided';
+        $response['errorcode'] = ERR_PUBLICKEY_NOT_SPECIFIED;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
 
     $password = explode("\n", file_get_contents('phppasswd'));
 
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // generate a public/private key for the new user
-    $private_key_resource = openssl_pkey_new();
-    openssl_pkey_export($private_key_resource, $private_key);
 
     if (!$connection->beginTransaction())
     {
@@ -45,9 +51,9 @@ function registeruser()
         return;
     }
 
-    $insert_user = $connection->prepare('INSERT INTO User (email,privatekey) VALUES (:email,:private_key)');
-    $insert_user->bindParam(':email', $emailaddress, PDO::PARAM_STR);
-    $insert_user->bindParam(':private_key', $private_key, PDO::PARAM_STR);
+    $insert_user = $connection->prepare('INSERT INTO User (email,publickey) VALUES (:email,:publickey)');
+    $insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+    $insert_user->bindParam(':publickey', $_POST['publickey'], PDO::PARAM_STR);
     try
     {
         $insert_user->execute();
@@ -70,13 +76,10 @@ function registeruser()
 
     $connection->commit();
 
-    $private_key_details = openssl_pkey_get_details($private_key_resource);
-    $public_key = $private_key_details['key'];
+    //send_email($_POST['email'], 'User registration', 'Please find your public key attached', array('publickey.txt'=>$public_key));
 
     $response = array();
     $response['userid'] = $userid;
-
-    send_email($emailaddress, 'User registration', 'Please find your public key attached', array('publickey.txt'=>$public_key));
 
     header('Content-Type: application/json', true, 201);
     echo json_encode($response);
