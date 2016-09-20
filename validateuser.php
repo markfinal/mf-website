@@ -53,8 +53,16 @@ function validateuser()
 
     $host_id = host_table_get_id($_POST['MAC']);
 
+    // as both user and host are confirmed registered, is there a mapping
+    // to authorise using this host by this user?
     $user_machine_id = userhostmachine_table_get_id($user_id, $host_id);
 
+    // the user is now authorised to use software on this machine
+    // return a token allowing access to licensing code
+    // only the owner of the private key will be able to extract the token
+    // TODO: get public key for user
+    // TODO: generate a token and store in the DB, that is associated with the user-host pairing
+    // TODO: call openssl_public_encrypt on the token, and return
     $response = array();
     $response['token'] = 'some magic token';
 
