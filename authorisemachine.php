@@ -21,15 +21,24 @@ function authorisemachine($url)
     $find_existing_request->execute();
     if (0 == $find_existing_request->rowCount())
     {
-        $message .= '<p>Invalid machine authorisation for '.$url.'</p>';
+        $message .= '<p>Invalid machine authorisation.</p>';
         $message .= $html_suffix;
 
         header('Content-Type: text/html', true, 404);
         echo $message;
-        return;
+        exit();
     }
 
     $request = $find_existing_request->fetch(PDO::FETCH_ASSOC);
+    if ($request['expired'] != 0)
+    {
+        $message .= '<p>Machine authorisation link has expired.</p>';
+        $message .= $html_suffix;
+
+        header('Content-Type: text/html', true, 404);
+        echo $message;
+        exit();
+    }
 
     $fetch_user_id = $connection->prepare('SELECT id FROM User WHERE email=:email');
     $fetch_user_id->bindParam(':email', $request['email'], PDO::PARAM_STR);
@@ -63,6 +72,12 @@ function authorisemachine($url)
         throw $e;
     }
 
+    $connection->commit();
+
+    // don't delete the requests immediately
+    // TODO:
+    expireSpecificMachineAuthorisationLink($connection,$request['id']);
+    /*
     $delete_request = $connection->prepare("DELETE FROM UserHostMachineRequest WHERE Id=:id");
     $delete_request->bindParam(':id', $request['id'], PDO::PARAM_INT);
     try
@@ -73,8 +88,7 @@ function authorisemachine($url)
     {
         throw $e;
     }
-
-    $connection->commit();
+    */
 
     // TODO: write some nice HTML
     $message .= '<p>Machine with MAC address '.$request['MAC'].' has been authorised for use for '.$request['email'].'</p>';

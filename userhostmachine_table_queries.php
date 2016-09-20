@@ -29,6 +29,23 @@ function userhostmachine_table_get_id($userid, $hostid)
     return $user_machine_id;
 }
 
+function expireSpecificMachineAuthorisationLink($connection,$id)
+{
+    if (!$connection->beginTransaction())
+    {
+        $response = array();
+        $response['errormessage'] = 'Could not start a transaction';
+
+        header('Content-Type: application/json', true, 500);
+        echo json_encode($response);
+        exit();
+    }
+    $update_expired_requests = $connection->prepare('UPDATE UserHostMachineRequest SET expired=1 WHERE id=:id');
+    $update_expired_requests->bindParam(':id', $id, PDO::PARAM_INT);
+    $update_expired_requests->execute();
+    $connection->commit();
+}
+
 function expireMachineAuthorisationLinks()
 {
     $password = explode("\n", file_get_contents('phppasswd'));
@@ -36,7 +53,8 @@ function expireMachineAuthorisationLinks()
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $find_expired_requests = $connection->prepare('SELECT id FROM UserHostMachineRequest WHERE created < NOW() - INTERVAL 24 HOUR AND expired=0');
+    $interval = '24 HOUR';
+    $find_expired_requests = $connection->prepare('SELECT id FROM UserHostMachineRequest WHERE created < NOW() - INTERVAL '.$interval.' AND expired=0');
     $find_expired_requests->execute();
     if ($find_expired_requests->rowCount() > 0)
     {
