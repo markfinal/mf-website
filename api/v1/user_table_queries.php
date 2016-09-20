@@ -8,11 +8,11 @@ function user_table_get_id($email)
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $query = $connection->prepare('SELECT id FROM User WHERE email=:email');
+    $query = $connection->prepare('SELECT id,certificate FROM User WHERE email=:email');
     $query->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
     $query->execute();
-    $user_id = $query->fetchColumn(0);
-    if (0 == $user_id)
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+    if (0 == $result['id'])
     {
         $response = array();
         $response['errormessage'] = 'The email address is not known';
@@ -25,6 +25,6 @@ function user_table_get_id($email)
 
     unset($connection);
 
-    return $user_id;
+    return $result;
 }
 ?>

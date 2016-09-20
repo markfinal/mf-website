@@ -24,22 +24,23 @@ function registeruser()
         echo json_encode($response);
         return;
     }
-    if (!array_key_exists('publickey', $_POST))
+    if (!array_key_exists('certificate', $_POST))
     {
         $response = array();
-        $response['errormessage'] = 'A public key must be provided';
-        $response['errorcode'] = ERR_PUBLICKEY_NOT_SPECIFIED;
+        $response['errormessage'] = 'A certificate must be provided';
+        $response['errorcode'] = ERR_CERTIFICATE_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
         return;
     }
 
-/* TESTING encryption, decryption, signing and verifying
-    $publickey = $_POST['publickey'];
-    error_log('Public key');
-    error_log(strlen($publickey));
-    error_log($publickey);
+    /*
+    // TESTING encryption, decryption, signing and verifying
+    $certificate = $_POST['certificate'];
+    error_log('Certificate');
+    error_log(strlen($certificate));
+    error_log($certificate);
     $privatekey= $_POST['privatekey'];
     error_log('Private key');
     error_log(strlen($privatekey));
@@ -52,14 +53,14 @@ function registeruser()
     }
 
     // note that this HAS to be an x509 certificate
-    $pk = openssl_pkey_get_public($publickey);
-    if (0 == $pk)
+    $public_res = openssl_pkey_get_public($certificate);
+    if (0 == $public_res)
     {
         error_log(openssl_error_string());
     }
 
     $cleartext = "Hello world";
-    if (!openssl_public_encrypt($cleartext, $encrypted, $pk, OPENSSL_PKCS1_OAEP_PADDING))
+    if (!openssl_public_encrypt($cleartext, $encrypted, $public_res, OPENSSL_PKCS1_OAEP_PADDING))
     {
         error_log(openssl_error_string());
     }
@@ -109,9 +110,9 @@ function registeruser()
         return;
     }
 
-    $insert_user = $connection->prepare('INSERT INTO User (email,publickey) VALUES (:email,:publickey)');
+    $insert_user = $connection->prepare('INSERT INTO User (email,certificate) VALUES (:email,:certificate)');
     $insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-    $insert_user->bindParam(':publickey', $_POST['publickey'], PDO::PARAM_STR);
+    $insert_user->bindParam(':certificate', $_POST['certificate'], PDO::PARAM_STR);
     try
     {
         $insert_user->execute();
@@ -133,8 +134,6 @@ function registeruser()
     $userid = intval($connection->lastInsertId());
 
     $connection->commit();
-
-    //send_email($_POST['email'], 'User registration', 'Please find your public key attached', array('publickey.txt'=>$public_key));
 
     $response = array();
     $response['userid'] = $userid;

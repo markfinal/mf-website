@@ -24,13 +24,15 @@ function fatal_handler()
         $errfile = $error['file'];
         $errline = $error['line'];
         $errstr  = $error['message'];
+        $errmsg = "Error no $errno: $errstr in $errfile at line $errline";
+        error_log($errmsg);
 
         // avoids errors like 'unknown variable: message' from the xdebug wrapper
         if (!startsWith($errfile, 'xdebug'))
         {
             $response = array();
             $response['errorcode'] = ERR_SERVER_ERROR;
-            $response['errormessage'] = "Error no $errno: $errstr in $errfile at line $errline";
+            $response['errormessage'] = $errmsg;
 
             header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
             echo json_encode($response);

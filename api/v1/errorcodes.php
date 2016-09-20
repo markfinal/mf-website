@@ -12,9 +12,9 @@ define('ERR_UNKNOWN_MAC_ADDRESS',                  202);
 define('ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER', 203);
 define('ERR_MAC_ADDRESS_ALREADY_INUSE',            204);
 
-// public key error codes
-define('ERR_PUBLICKEY_NOT_SPECIFIED',              301);
-define('ERR_INCORRECT_PUBLICKEY',                  302);
+// certificate error codes
+define('ERR_CERTIFICATE_NOT_SPECIFIED',            301);
+define('ERR_INCORRECT_CERTIFICATE',                302);
 
 // machine registration error codes
 define('ERR_AUTH_MACHINE_LINK_EXPIRED',            401);
