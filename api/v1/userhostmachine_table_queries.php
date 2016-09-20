@@ -29,6 +29,23 @@ function userhostmachine_table_get_id($userid, $hostid)
     return $user_machine_id;
 }
 
+function userhostmachine_table_get_num_usermachines($userid)
+{
+    $password = explode("\n", file_get_contents('phppasswd'));
+
+    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $query = $connection->prepare('SELECT COUNT(id) FROM UserHostMachine WHERE user=:user');
+    $query->bindParam(':user', $userid, PDO::PARAM_INT);
+    $query->execute();
+    $num_user_machines = $query->fetchColumn(0);
+
+    unset($connection);
+
+    return $num_user_machines;
+}
+
 function expireSpecificMachineAuthorisationLink($connection,$id)
 {
     if (!$connection->beginTransaction())

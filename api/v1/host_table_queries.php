@@ -1,7 +1,7 @@
 <?php
 require_once 'api/v1/errorcodes.php';
 
-function host_table_get_id($MAC)
+function host_table_get_id($MAC, $num_user_machines, $max_machines)
 {
     $password = explode("\n", file_get_contents('phppasswd'));
 
@@ -14,6 +14,18 @@ function host_table_get_id($MAC)
     $host_id = $query->fetchColumn(0);
     if (0 == $host_id)
     {
+        // check that adding one more machine will not exceed the quota
+        if ($num_user_machines + 1 > $max_machines)
+        {
+            $response = array();
+            $response['errormessage'] = 'Quota of machines has been reached';
+            $response['errorcode'] = ERR_INSUFFICIENT_FREE_MAC_ADDRESSES;
+
+            header('Content-Type: application/json', true, 412);
+            echo json_encode($response);
+            exit();
+        }
+
         $response = array();
         $response['errormessage'] = 'The MAC address is not known';
         $response['errorcode'] = ERR_UNKNOWN_MAC_ADDRESS;
