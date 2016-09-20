@@ -55,7 +55,7 @@ function associatemachinewithuser()
             return;
         }
 
-        $url = '/api/v1/authorizemachine/';
+        $url = '/api/v1/authorisemachine/';
         $url .= md5(uniqid($_POST['email'].$MACaddress, true));
 
         $insert_new_request = $connection->prepare('INSERT INTO UserHostMachineRequest (email,MAC,url) VALUES (:email,:MAC,:url)');
