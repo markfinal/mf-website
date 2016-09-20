@@ -28,6 +28,9 @@ function associatemachinewithuser()
         return;
     }
 
+    // ensure that all MAC addresses are uppercase
+    $MACaddress = strtoupper($_POST['MAC']);
+
     expireMachineAuthorisationLinks();
 
     $password = explode("\n", file_get_contents('phppasswd'));
@@ -37,7 +40,7 @@ function associatemachinewithuser()
 
     $find_existing_request = $connection->prepare('SELECT id,url,expired FROM UserHostMachineRequest WHERE email=:email AND MAC=:MAC');
     $find_existing_request->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-    $find_existing_request->bindParam(':MAC', $_POST['MAC'], PDO::PARAM_STR);
+    $find_existing_request->bindParam(':MAC', $MACaddress, PDO::PARAM_STR);
     $find_existing_request->execute();
     $request = $find_existing_request->fetch(PDO::FETCH_ASSOC);
     if (0 == $request['id'])
@@ -53,11 +56,11 @@ function associatemachinewithuser()
         }
 
         $url = '/api/v1/authorizemachine/';
-        $url .= md5(uniqid($_POST['email'].$_POST['MAC'], true));
+        $url .= md5(uniqid($_POST['email'].$MACaddress, true));
 
         $insert_new_request = $connection->prepare('INSERT INTO UserHostMachineRequest (email,MAC,url) VALUES (:email,:MAC,:url)');
         $insert_new_request->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-        $insert_new_request->bindParam(':MAC', $_POST['MAC'], PDO::PARAM_STR);
+        $insert_new_request->bindParam(':MAC', $MACaddress, PDO::PARAM_STR);
         $insert_new_request->bindParam(':url', $url, PDO::PARAM_STR);
         $insert_new_request->execute();
 

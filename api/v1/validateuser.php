@@ -51,7 +51,10 @@ function validateuser()
         return;
     }
 
-    $host_id = host_table_get_id($_POST['MAC']);
+    // ensure that all MAC addresses are uppercase
+    $MACaddress = strtoupper($_POST['MAC']);
+
+    $host_id = host_table_get_id($MACaddress);
 
     // as both user and host are confirmed registered, is there a mapping
     // to authorise using this host by this user?

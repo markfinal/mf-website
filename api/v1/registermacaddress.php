@@ -15,6 +15,9 @@ function registermacaddress()
         return;
     }
 
+    // ensure that all MAC addresses are uppercase
+    $MACaddress = strtoupper($_POST['MAC']);
+
     $password = explode("\n", file_get_contents('phppasswd'));
 
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
@@ -31,7 +34,7 @@ function registermacaddress()
     }
 
     $insert_mac_address = $connection->prepare('INSERT INTO Host (MAC) VALUES (:MAC)');
-    $insert_mac_address->bindParam(':MAC', $_POST['MAC'], PDO::PARAM_STR);
+    $insert_mac_address->bindParam(':MAC', $MACaddress, PDO::PARAM_STR);
     try
     {
         $insert_mac_address->execute();
