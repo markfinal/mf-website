@@ -3,6 +3,7 @@
 require_once 'send_email.php';
 require_once 'errorcodes.php';
 require_once 'authorisemachine.php';
+require_once 'userhostmachine_table_queries.php';
 
 function associatemachinewithuser()
 {
