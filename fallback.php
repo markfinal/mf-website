@@ -70,10 +70,6 @@ try
             associatemachinewithuser();
             break;
 
-        case '/api/v1/validatemachine':
-            validatemachine();
-            break;
-
         default:
             {
                 if (!isdynamicurl($_SERVER['REQUEST_URI']))
