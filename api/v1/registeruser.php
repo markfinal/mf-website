@@ -59,11 +59,11 @@ function registeruser()
     }
 
     $cleartext = "Hello world";
-    if (!openssl_public_encrypt($cleartext, $encrypted, $pk))
+    if (!openssl_public_encrypt($cleartext, $encrypted, $pk, OPENSSL_PKCS1_OAEP_PADDING))
     {
         error_log(openssl_error_string());
     }
-    if (!openssl_private_decrypt($encrypted, $decrypted, $privatekey))
+    if (!openssl_private_decrypt($encrypted, $decrypted, $privatekey, OPENSSL_PKCS1_OAEP_PADDING))
     {
         error_log(openssl_error_string());
     }
