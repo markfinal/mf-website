@@ -5,7 +5,7 @@ function connectdb()
 
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    // TODO: disable prepare emulation
+    $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     return $connection;
 }
 ?>
