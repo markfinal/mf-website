@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 19, 2016 at 09:13 PM
+-- Generation Time: Sep 20, 2016 at 05:09 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -41,8 +41,8 @@ CREATE TABLE `Host` (
 CREATE TABLE `User` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `publickey` varchar(4096) NOT NULL,
-  `maxmachines` int(11) NOT NULL DEFAULT '3'
+  `certificate` blob NOT NULL,
+  `maxmachines` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
