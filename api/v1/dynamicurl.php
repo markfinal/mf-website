@@ -1,6 +1,6 @@
 <?php
-require_once 'errorcodes.php';
-require_once 'stringutils.php';
+require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/stringutils.php';
 
 function isdynamicurl($url)
 {

@@ -1,12 +1,12 @@
 <?php
-require_once 'send_email.php';
-require_once 'validateuser.php';
-require_once 'registeruser.php';
-require_once 'registermacaddress.php';
-require_once 'associatemachinewithuser.php';
-require_once 'validatemachine.php';
-require_once 'stringutils.php';
-require_once 'dynamicurl.php';
+require_once 'api/v1/send_email.php';
+require_once 'api/v1/validateuser.php';
+require_once 'api/v1/registeruser.php';
+require_once 'api/v1/registermacaddress.php';
+require_once 'api/v1/associatemachinewithuser.php';
+require_once 'api/v1/validatemachine.php';
+require_once 'api/v1/stringutils.php';
+require_once 'api/v1/dynamicurl.php';
 
 // TODO: is this shutdown function needed now that there is an exception handler?
 register_shutdown_function( "fatal_handler" );

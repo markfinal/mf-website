@@ -1,9 +1,9 @@
 <?php
 
-require_once 'send_email.php';
-require_once 'errorcodes.php';
-require_once 'authorisemachine.php';
-require_once 'userhostmachine_table_queries.php';
+require_once 'api/v1/send_email.php';
+require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/authorisemachine.php';
+require_once 'api/v1/userhostmachine_table_queries.php';
 
 function associatemachinewithuser()
 {

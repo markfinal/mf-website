@@ -1,5 +1,5 @@
 <?php
-require_once 'userhostmachine_table_queries.php';
+require_once 'api/v1/userhostmachine_table_queries.php';
 
 function authorisemachine($url)
 {

@@ -1,22 +1,22 @@
 <?php
-require_once 'errorcodes.php';
+require_once 'api/v1/errorcodes.php';
 
-function host_table_get_id($MAC)
+function user_table_get_id($email)
 {
     $password = explode("\n", file_get_contents('phppasswd'));
 
     $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $query = $connection->prepare('SELECT id FROM Host WHERE MAC=:MAC');
-    $query->bindParam(':MAC', $MAC, PDO::PARAM_STR);
+    $query = $connection->prepare('SELECT id FROM User WHERE email=:email');
+    $query->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
     $query->execute();
-    $host_id = $query->fetchColumn(0);
-    if (0 == $host_id)
+    $user_id = $query->fetchColumn(0);
+    if (0 == $user_id)
     {
         $response = array();
-        $response['errormessage'] = 'The MAC address is not known';
-        $response['errorcode'] = ERR_UNKNOWN_MAC_ADDRESS;
+        $response['errormessage'] = 'The email address is not known';
+        $response['errorcode'] = ERR_UNKNOWN_EMAIL;
 
         header('Content-Type: application/json', true, 404);
         echo json_encode($response);
@@ -25,6 +25,6 @@ function host_table_get_id($MAC)
 
     unset($connection);
 
-    return $host_id;
+    return $user_id;
 }
 ?>

@@ -1,8 +1,8 @@
 <?php
-require_once 'errorcodes.php';
-require_once 'user_table_queries.php';
-require_once 'host_table_queries.php';
-require_once 'userhostmachine_table_queries.php';
+require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/user_table_queries.php';
+require_once 'api/v1/host_table_queries.php';
+require_once 'api/v1/userhostmachine_table_queries.php';
 
 function var_dump_error_log($object)
 {
