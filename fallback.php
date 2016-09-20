@@ -4,7 +4,6 @@ require_once 'api/v1/validateuser.php';
 require_once 'api/v1/registeruser.php';
 require_once 'api/v1/registermacaddress.php';
 require_once 'api/v1/associatemachinewithuser.php';
-require_once 'api/v1/validatemachine.php';
 require_once 'api/v1/stringutils.php';
 require_once 'api/v1/dynamicurl.php';
 
