@@ -1,12 +1,10 @@
 <?php
+require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
 
 function userhostmachine_table_get_id($userid, $hostid)
 {
-    $password = explode("\n", file_get_contents('phppasswd'));
-
-    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = connectdb();
 
     $query = $connection->prepare('SELECT id FROM UserHostMachine WHERE user=:user AND host=:host');
     $query->bindParam(':user', $userid, PDO::PARAM_INT);
@@ -31,10 +29,7 @@ function userhostmachine_table_get_id($userid, $hostid)
 
 function userhostmachine_table_get_num_usermachines($userid)
 {
-    $password = explode("\n", file_get_contents('phppasswd'));
-
-    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = connectdb();
 
     $query = $connection->prepare('SELECT COUNT(id) FROM UserHostMachine WHERE user=:user');
     $query->bindParam(':user', $userid, PDO::PARAM_INT);
@@ -65,10 +60,7 @@ function expireSpecificMachineAuthorisationLink($connection,$id)
 
 function expireMachineAuthorisationLinks()
 {
-    $password = explode("\n", file_get_contents('phppasswd'));
-
-    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = connectdb();
 
     $interval = '24 HOUR';
     $find_expired_requests = $connection->prepare('SELECT id FROM UserHostMachineRequest WHERE created < NOW() - INTERVAL '.$interval.' AND expired=0');

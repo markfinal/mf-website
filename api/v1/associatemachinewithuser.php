@@ -1,5 +1,6 @@
 <?php
 
+require_once 'api/v1/dbutils.php';
 require_once 'api/v1/send_email.php';
 require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/authorisemachine.php';
@@ -33,10 +34,7 @@ function associatemachinewithuser()
 
     expireMachineAuthorisationLinks();
 
-    $password = explode("\n", file_get_contents('phppasswd'));
-
-    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = connectdb();
 
     $find_existing_request = $connection->prepare('SELECT id,url,expired FROM UserHostMachineRequest WHERE email=:email AND MAC=:MAC');
     $find_existing_request->bindParam(':email', $_POST['email'], PDO::PARAM_STR);

@@ -1,12 +1,10 @@
 <?php
+require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
 
 function host_table_get_id($MAC, $num_user_machines, $max_machines)
 {
-    $password = explode("\n", file_get_contents('phppasswd'));
-
-    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = connectdb();
 
     $query = $connection->prepare('SELECT id FROM Host WHERE MAC=:MAC');
     $query->bindParam(':MAC', $MAC, PDO::PARAM_STR);

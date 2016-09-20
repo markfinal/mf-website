@@ -1,5 +1,6 @@
 <?php
 
+require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
 
 function registermacaddress()
@@ -18,10 +19,7 @@ function registermacaddress()
     // ensure that all MAC addresses are uppercase
     $MACaddress = strtoupper($_POST['MAC']);
 
-    $password = explode("\n", file_get_contents('phppasswd'));
-
-    $connection = new PDO('mysql:host=localhost;dbname=markfina_entitlements;charset=utf8', 'markfina_php', $password[0]);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = connectdb();
 
     if (!$connection->beginTransaction())
     {
