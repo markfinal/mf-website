@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2016 at 05:09 PM
+-- Generation Time: Sep 21, 2016 at 02:05 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -42,7 +42,7 @@ CREATE TABLE `User` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
   `certificate` blob NOT NULL,
-  `maxmachines` int(11) NOT NULL DEFAULT '1'
+  `maxmachines` int(11) NOT NULL DEFAULT '3'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -70,6 +70,19 @@ CREATE TABLE `UserHostMachineRequest` (
   `url` varchar(2048) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `expired` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `UserToken`
+--
+
+CREATE TABLE `UserToken` (
+  `id` int(11) NOT NULL,
+  `token` blob NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userhost` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -104,6 +117,12 @@ ALTER TABLE `UserHostMachineRequest`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `UserToken`
+--
+ALTER TABLE `UserToken`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -126,6 +145,11 @@ ALTER TABLE `UserHostMachine`
 -- AUTO_INCREMENT for table `UserHostMachineRequest`
 --
 ALTER TABLE `UserHostMachineRequest`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `UserToken`
+--
+ALTER TABLE `UserToken`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

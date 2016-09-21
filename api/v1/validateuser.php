@@ -3,6 +3,7 @@ require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/user_table_queries.php';
 require_once 'api/v1/host_table_queries.php';
 require_once 'api/v1/userhostmachine_table_queries.php';
+require_once 'api/v1/usertoken_table_queries.php';
 
 function var_dump_error_log($object)
 {
@@ -61,31 +62,6 @@ function validateuser()
     // to authorise using this host by this user?
     $user_machine_id = userhostmachine_table_get_id($userrow['id'], $host_id);
 
-    // the user is now authorised to use software on this machine
-    // return a token allowing access to licensing code
-    // only the owner of the private key will be able to extract the token
-    // TODO: generate a token and store in the DB, that is associated with the user-host pairing
-    $token = 'I am bloody awesome';//md5(uniqid($_POST['email'].$_POST['MAC'], true));
-    $certificate = $userrow['certificate'];
-    $public_res = openssl_pkey_get_public($certificate);
-    // Note: this padding type must match that in the C++
-    $padding = OPENSSL_PKCS1_OAEP_PADDING;
-    //$padding = OPENSSL_PKCS1_PADDING;
-    if (!openssl_public_encrypt($token, $encrypted_token, $public_res, $padding))
-    {
-        error_log(openssl_error_string());
-    }
-    openssl_free_key($public_res);
-
-    error_log($encrypted_token);
-    error_log(base64_encode($encrypted_token));
-
-    $response = array();
-    $response['token'] = $token;
-    $response['encryptedtoken'] = base64_encode($encrypted_token);
-    $response['length'] = strlen($encrypted_token);
-
-    header('Content-Type: application/json', true, 200);
-    echo json_encode($response);
+    usertoken_createnew($_POST['email'], $_POST['MAC'], $userrow['certificate'], $user_machine_id);
 }
 ?>
