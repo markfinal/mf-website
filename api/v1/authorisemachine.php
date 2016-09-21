@@ -2,6 +2,7 @@
 
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/userhostmachine_table_queries.php';
+require_once 'api/v1/log.php';
 
 function authorisemachine($url)
 {
@@ -73,6 +74,15 @@ function authorisemachine($url)
 
     $connection->commit();
 
+    // TODO: write some nice HTML
+    $message .= '<p>Machine with MAC address '.$request['MAC'].' has been authorised for use for '.$request['email'].'</p>';
+    $message .= $html_suffix;
+
+    storelog("Machine has been authorised", $user_id, $host_id);
+
+    header('Content-Type: text/html', true, 200);
+    echo $message;
+
     // don't delete the requests immediately
     // TODO:
     expireSpecificMachineAuthorisationLink($connection,$request['id']);
@@ -88,13 +98,6 @@ function authorisemachine($url)
         throw $e;
     }
     */
-
-    // TODO: write some nice HTML
-    $message .= '<p>Machine with MAC address '.$request['MAC'].' has been authorised for use for '.$request['email'].'</p>';
-    $message .= $html_suffix;
-
-    header('Content-Type: text/html', true, 200);
-    echo $message;
 
     unset($connection);
 }

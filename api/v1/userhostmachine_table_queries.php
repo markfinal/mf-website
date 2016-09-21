@@ -27,6 +27,20 @@ function userhostmachine_table_get_id($userid, $hostid)
     return $user_machine_id;
 }
 
+function userhostmachine_table_getuserandhost($id)
+{
+    $connection = connectdb();
+
+    $query = $connection->prepare('SELECT user,host FROM UserHostMachine WHERE id=:id');
+    $query->bindParam(':id', $id, PDO::PARAM_INT);
+    $query->execute();
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    unset($connection);
+
+    return $result;
+}
+
 function userhostmachine_table_get_num_usermachines($userid)
 {
     $connection = connectdb();

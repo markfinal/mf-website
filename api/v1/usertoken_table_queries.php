@@ -2,6 +2,7 @@
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/log.php';
+require_once 'api/v1/userhostmachine_table_queries.php';
 
 function usertoken_deleteexisting($userhost_id)
 {
@@ -59,6 +60,7 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
     $query->bindParam(':token', $token, PDO::PARAM_STR);
     $query->bindParam(':userhost_id', $userhost_id, PDO::PARAM_INT);
     $query->execute();
+    $token_id = $connection->lastInsertId();
 
     $public_res = openssl_pkey_get_public($certificate);
 
@@ -73,7 +75,6 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
 
     // after the OpenSSL code, commit to the DB
     $connection->commit();
-    unset($connection);
 
     $response = array();
     $response['token'] = $token;
@@ -82,5 +83,10 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
 
     header('Content-Type: application/json', true, 200);
     echo json_encode($response);
+
+    $user_and_host = userhostmachine_table_getuserandhost($userhost_id);
+    storelog('Access token '.$token_id.' has been sent', $user_and_host['user'], $user_and_host['host']);
+
+    unset($connection);
 }
 ?>
