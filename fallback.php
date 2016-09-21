@@ -59,6 +59,7 @@ try
     require_once 'api/v1/associatemachinewithuser.php';
     require_once 'api/v1/stringutils.php';
     require_once 'api/v1/dynamicurl.php';
+    require_once 'api/v1/licenserequest.php';
 
     switch ($_SERVER['REQUEST_URI'])
     {
@@ -76,6 +77,10 @@ try
 
         case '/api/v1/associatemachinewithuser':
             associatemachinewithuser();
+            break;
+
+        case '/api/v1/licenserequest':
+            licenserequest();
             break;
 
         default:

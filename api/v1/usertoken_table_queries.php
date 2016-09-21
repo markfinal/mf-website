@@ -72,4 +72,21 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
 
     unset($connection);
 }
+
+function usertoken_getdata_ifvalid($token)
+{
+    $connection = connectdb();
+    $query = $connection->prepare('SELECT id,userhost FROM UserToken WHERE token=:token');
+    $query->bindParam(':token', $token, PDO::PARAM_STR);
+    $query->execute();
+    if ($query->rowCount() == 0)
+    {
+        return NULL;
+    }
+    else
+    {
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+}
 ?>
