@@ -68,25 +68,24 @@ function validateuser()
     $token = 'I am bloody awesome';//md5(uniqid($_POST['email'].$_POST['MAC'], true));
     $certificate = $userrow['certificate'];
     $public_res = openssl_pkey_get_public($certificate);
-    if (!openssl_public_encrypt($token, $encrypted_token, $public_res, OPENSSL_PKCS1_OAEP_PADDING))
+    // Note: this padding type must match that in the C++
+    $padding = OPENSSL_PKCS1_OAEP_PADDING;
+    //$padding = OPENSSL_PKCS1_PADDING;
+    if (!openssl_public_encrypt($token, $encrypted_token, $public_res, $padding))
     {
         error_log(openssl_error_string());
     }
     openssl_free_key($public_res);
 
-    error_log($token);
     error_log($encrypted_token);
     error_log(base64_encode($encrypted_token));
 
     $response = array();
     $response['token'] = $token;
     $response['encryptedtoken'] = base64_encode($encrypted_token);
+    $response['length'] = strlen($encrypted_token);
 
     header('Content-Type: application/json', true, 200);
-    $encoded_result = json_encode($response);
-    if ($encoded_result)
-    {
-        echo $encoded_result;
-    }
+    echo json_encode($response);
 }
 ?>
