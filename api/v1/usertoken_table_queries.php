@@ -1,6 +1,7 @@
 <?php
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/log.php';
 
 function usertoken_deleteexisting($userhost_id)
 {
@@ -21,7 +22,10 @@ function usertoken_deleteexisting($userhost_id)
     $query->execute();
 
     $num_deleted = $query->rowCount();
-    error_log('There were '.$num_deleted.' instances deleted');
+    if ($num_deleted > 0)
+    {
+        storelog('There were '.$num_deleted.' user tokens deleted for the current user');
+    }
 
     $connection->commit();
 
