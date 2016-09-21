@@ -75,9 +75,6 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
     $connection->commit();
     unset($connection);
 
-    error_log($encrypted_token);
-    error_log(base64_encode($encrypted_token));
-
     $response = array();
     $response['token'] = $token;
     $response['encryptedtoken'] = base64_encode($encrypted_token);
