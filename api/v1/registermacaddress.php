@@ -22,15 +22,7 @@ function registermacaddress()
 
     $connection = connectdb();
 
-    if (!$connection->beginTransaction())
-    {
-        $response = array();
-        $response['errormessage'] = 'Could not start a transaction';
-
-        header('Content-Type: application/json', true, 500);
-        echo json_encode($response);
-        return;
-    }
+    createTransaction($connection);
 
     $insert_mac_address = $connection->prepare('INSERT INTO Host (MAC) VALUES (:MAC)');
     $insert_mac_address->bindParam(':MAC', $MACaddress, PDO::PARAM_STR);

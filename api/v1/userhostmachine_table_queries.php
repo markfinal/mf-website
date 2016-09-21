@@ -57,15 +57,7 @@ function userhostmachine_table_get_num_usermachines($userid)
 
 function expireSpecificMachineAuthorisationLink($connection,$id)
 {
-    if (!$connection->beginTransaction())
-    {
-        $response = array();
-        $response['errormessage'] = 'Could not start a transaction';
-
-        header('Content-Type: application/json', true, 500);
-        echo json_encode($response);
-        exit();
-    }
+    createTransaction($connection);
     $update_expired_requests = $connection->prepare('UPDATE UserHostMachineRequest SET expired=1 WHERE id=:id');
     $update_expired_requests->bindParam(':id', $id, PDO::PARAM_INT);
     $update_expired_requests->execute();
@@ -81,15 +73,7 @@ function expireMachineAuthorisationLinks()
     $find_expired_requests->execute();
     if ($find_expired_requests->rowCount() > 0)
     {
-        if (!$connection->beginTransaction())
-        {
-            $response = array();
-            $response['errormessage'] = 'Could not start a transaction';
-
-            header('Content-Type: application/json', true, 500);
-            echo json_encode($response);
-            exit();
-        }
+        createTransaction($connection);
         $update_expired_requests = $connection->prepare('UPDATE UserHostMachineRequest SET expired=1 WHERE id=:id');
         while ($row = $find_expired_requests->fetch(PDO::FETCH_ASSOC))
         {

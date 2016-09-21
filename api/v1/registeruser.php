@@ -99,15 +99,7 @@ function registeruser()
 
     $connection = connectdb();
 
-    if (!$connection->beginTransaction())
-    {
-        $response = array();
-        $response['errormessage'] = 'Could not start a transaction';
-
-        header('Content-Type: application/json', true, 500);
-        echo json_encode($response);
-        return;
-    }
+    createTransaction($connection);
 
     $insert_user = $connection->prepare('INSERT INTO User (email,certificate) VALUES (:email,:certificate)');
     $insert_user->bindParam(':email', $_POST['email'], PDO::PARAM_STR);

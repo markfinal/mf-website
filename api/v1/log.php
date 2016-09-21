@@ -10,15 +10,7 @@ function storelog($message, $user_id=NULL, $host_id=NULL)
     {
         $connection = connectdb();
 
-        if (!$connection->beginTransaction())
-        {
-            $response = array();
-            $response['errormessage'] = 'Could not start a transaction';
-
-            header('Content-Type: application/json', true, 500);
-            echo json_encode($response);
-            return;
-        }
+        createTransaction($connection);
 
         $query = $connection->prepare('INSERT INTO Log (token,message,user,host) VALUES (:token,:message,:userid,:hostid)');
         $query->bindParam(':token', $token, PDO::PARAM_STR);

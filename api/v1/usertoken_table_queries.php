@@ -8,15 +8,7 @@ function usertoken_deleteexisting($userhost_id)
 {
     $connection = connectdb();
 
-    if (!$connection->beginTransaction())
-    {
-        $response = array();
-        $response['errormessage'] = 'Could not start a transaction';
-
-        header('Content-Type: application/json', true, 500);
-        echo json_encode($response);
-        return;
-    }
+    createTransaction($connection);
 
     $query = $connection->prepare('DELETE FROM UserToken WHERE userhost=:userhost_id');
     $query->bindParam(':userhost_id', $userhost_id, PDO::PARAM_INT);
@@ -46,15 +38,7 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
  
     $connection = connectdb();
 
-    if (!$connection->beginTransaction())
-    {
-        $response = array();
-        $response['errormessage'] = 'Could not start a transaction';
-
-        header('Content-Type: application/json', true, 500);
-        echo json_encode($response);
-        return;
-    }
+    createTransaction($connection);
 
     $query = $connection->prepare('INSERT INTO UserToken (token,userhost) VALUES (:token,:userhost_id)');
     $query->bindParam(':token', $token, PDO::PARAM_STR);

@@ -43,15 +43,7 @@ function associatemachinewithuser()
     $request = $find_existing_request->fetch(PDO::FETCH_ASSOC);
     if (0 == $request['id'])
     {
-        if (!$connection->beginTransaction())
-        {
-            $response = array();
-            $response['errormessage'] = 'Could not start a transaction';
-
-            header('Content-Type: application/json', true, 500);
-            echo json_encode($response);
-            return;
-        }
+        createTransaction($connection);
 
         $url = '/api/v1/authorisemachine/';
         $url .= md5(uniqid($_POST['email'].$MACaddress, true));

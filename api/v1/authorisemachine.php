@@ -50,15 +50,7 @@ function authorisemachine($url)
     $fetch_host_id->execute();
     $host_id = $fetch_host_id->fetchColumn(0);
 
-    if (!$connection->beginTransaction())
-    {
-        $response = array();
-        $response['errormessage'] = 'Could not start a transaction';
-
-        header('Content-Type: application/json', true, 500);
-        echo json_encode($response);
-        return;
-    }
+    createTransaction($connection);
 
     $insert_user_machine_association = $connection->prepare('INSERT INTO UserHostMachine (user,host) VALUES (:user,:host)');
     $insert_user_machine_association->bindParam(':user', $user_id, PDO::PARAM_INT);
