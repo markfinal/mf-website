@@ -2,6 +2,7 @@
 
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/log.php';
 
 function registermacaddress()
 {
@@ -54,6 +55,7 @@ function registermacaddress()
     $mac_address_id = intval($connection->lastInsertId());
 
     $connection->commit();
+    storelog('Registered MAC address '.$MACaddress, $mac_address_id);
 
     $response = array();
     $response['mac_address_id'] = $mac_address_id;

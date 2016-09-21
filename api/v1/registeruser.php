@@ -2,6 +2,7 @@
 
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/log.php';
 
 function registeruser()
 {
@@ -130,8 +131,8 @@ function registeruser()
         throw $e;
     }
     $userid = intval($connection->lastInsertId());
-
     $connection->commit();
+    storelog('Registered email '.$_POST['email'], $userid);
 
     $response = array();
     $response['userid'] = $userid;

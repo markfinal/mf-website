@@ -1,11 +1,6 @@
 <?php
-require_once 'api/v1/send_email.php';
-require_once 'api/v1/validateuser.php';
-require_once 'api/v1/registeruser.php';
-require_once 'api/v1/registermacaddress.php';
-require_once 'api/v1/associatemachinewithuser.php';
-require_once 'api/v1/stringutils.php';
-require_once 'api/v1/dynamicurl.php';
+require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/log.php';
 
 // TODO: is this shutdown function needed now that there is an exception handler?
 register_shutdown_function( "fatal_handler" );
@@ -25,17 +20,18 @@ function fatal_handler()
         $errline = $error['line'];
         $errstr  = $error['message'];
         $errmsg = "Error no $errno: $errstr in $errfile at line $errline";
-        error_log($errmsg);
+        $token = storelog($errmsg);
 
         // avoids errors like 'unknown variable: message' from the xdebug wrapper
         if (!startsWith($errfile, 'xdebug'))
         {
             $response = array();
             $response['errorcode'] = ERR_SERVER_ERROR;
-            $response['errormessage'] = $errmsg;
+            $response['errortoken'] = $token;
 
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            header('Content-Type: application/json', true, 500);
             echo json_encode($response);
+            exit();
         }
     }
 }
@@ -44,15 +40,26 @@ function fatal_handler()
 set_exception_handler('exception_handler');
 function exception_handler(Throwable $e)
 {
-    error_log("$e");
-    header('HTTP/1.1 500 Internal Server Error', true, 500);
-    header('Content-Type: application/json');
-    echo json_encode(["errormessage" => 'Server error']);
-    exit;
+    $token = storelog($e);
+    $response = array();
+    $response['errorcode'] = ERR_SERVER_ERROR;
+    $response['errortoken'] = $token;
+
+    header('Content-Type: application/json', true, 500);
+    echo json_encode($response);
+    exit();
 }
 
 try
 {
+    require_once 'api/v1/send_email.php';
+    require_once 'api/v1/validateuser.php';
+    require_once 'api/v1/registeruser.php';
+    require_once 'api/v1/registermacaddress.php';
+    require_once 'api/v1/associatemachinewithuser.php';
+    require_once 'api/v1/stringutils.php';
+    require_once 'api/v1/dynamicurl.php';
+
     switch ($_SERVER['REQUEST_URI'])
     {
         case '/api/v1/validateuser':
@@ -87,30 +94,30 @@ try
 }
 catch (PDOException $e)
 {
+    $token = storelog($e);
     $response = array();
     $response['errorcode'] = ERR_MYSQL_ERROR;
-    $response['errormessage'] = $e->getMessage();
-    error_log($e);
+    $response['errortoken'] = $token;
 
     header('Content-Type: application/json', true, 500);
     echo json_encode($response);
 }
 catch (\ParseError $e)
 {
+    $token = storelog($e);
     $response = array();
     $response['errorcode'] = ERR_SERVER_ERROR;
-    $response['errormessage'] = $e->getMessage();
-    error_log($e);
+    $response['errortoken'] = $token;
 
     header('Content-Type: application/json', true, 500);
     echo json_encode($response);
 }
 catch (Exception $e)
 {
+    $token = storelog($e);
     $response = array();
     $response['errorcode'] = ERR_SERVER_ERROR;
-    $response['errormessage'] = $e->getMessage();
-    error_log($e);
+    $response['errortoken'] = $token;
 
     header('Content-Type: application/json', true, 500);
     echo json_encode($response);

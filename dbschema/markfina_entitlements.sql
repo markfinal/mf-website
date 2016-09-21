@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 21, 2016 at 02:05 PM
+-- Generation Time: Sep 21, 2016 at 02:45 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -30,6 +30,21 @@ CREATE TABLE `Host` (
   `id` int(11) NOT NULL,
   `MAC` varchar(64) NOT NULL,
   `RevokeReason` varchar(4096) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Log`
+--
+
+CREATE TABLE `Log` (
+  `id` int(11) NOT NULL,
+  `token` varchar(32) NOT NULL,
+  `message` varchar(4096) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user` int(11) DEFAULT NULL,
+  `host` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -97,6 +112,12 @@ ALTER TABLE `Host`
   ADD UNIQUE KEY `MAC` (`MAC`);
 
 --
+-- Indexes for table `Log`
+--
+ALTER TABLE `Log`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `User`
 --
 ALTER TABLE `User`
@@ -130,6 +151,11 @@ ALTER TABLE `UserToken`
 -- AUTO_INCREMENT for table `Host`
 --
 ALTER TABLE `Host`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Log`
+--
+ALTER TABLE `Log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `User`
