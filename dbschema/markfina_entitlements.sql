@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2016 at 12:23 PM
+-- Generation Time: Sep 22, 2016 at 01:02 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -177,7 +177,8 @@ CREATE TABLE `UserHostMachineRequest` (
 -- Indexes for table `AccessToken`
 --
 ALTER TABLE `AccessToken`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userhost` (`userhost`);
 
 --
 -- Indexes for table `Host`
@@ -190,13 +191,17 @@ ALTER TABLE `Host`
 -- Indexes for table `License`
 --
 ALTER TABLE `License`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user` (`user`),
+  ADD KEY `type` (`type`),
+  ADD KEY `product` (`product`);
 
 --
 -- Indexes for table `LicenseSession`
 --
 ALTER TABLE `LicenseSession`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `license` (`license`);
 
 --
 -- Indexes for table `LicenseType`
@@ -208,7 +213,10 @@ ALTER TABLE `LicenseType`
 -- Indexes for table `Log`
 --
 ALTER TABLE `Log`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user` (`user`),
+  ADD KEY `host` (`host`),
+  ADD KEY `session` (`session`);
 
 --
 -- Indexes for table `Product`
@@ -228,7 +236,8 @@ ALTER TABLE `User`
 --
 ALTER TABLE `UserHostMachine`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `userhostpair` (`user`,`host`) USING BTREE;
+  ADD UNIQUE KEY `userhostpair` (`user`,`host`) USING BTREE,
+  ADD KEY `userhostmachine_host` (`host`);
 
 --
 -- Indexes for table `UserHostMachineRequest`
@@ -290,6 +299,45 @@ ALTER TABLE `UserHostMachine`
 --
 ALTER TABLE `UserHostMachineRequest`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `AccessToken`
+--
+ALTER TABLE `AccessToken`
+  ADD CONSTRAINT `accesstoken_userhost` FOREIGN KEY (`userhost`) REFERENCES `UserHostMachine` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `License`
+--
+ALTER TABLE `License`
+  ADD CONSTRAINT `license_product` FOREIGN KEY (`product`) REFERENCES `Product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `license_type` FOREIGN KEY (`type`) REFERENCES `LicenseType` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `license_user` FOREIGN KEY (`user`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `LicenseSession`
+--
+ALTER TABLE `LicenseSession`
+  ADD CONSTRAINT `licensesession_license` FOREIGN KEY (`license`) REFERENCES `License` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `Log`
+--
+ALTER TABLE `Log`
+  ADD CONSTRAINT `log_host` FOREIGN KEY (`host`) REFERENCES `Host` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `log_session` FOREIGN KEY (`session`) REFERENCES `LicenseSession` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `log_user` FOREIGN KEY (`user`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `UserHostMachine`
+--
+ALTER TABLE `UserHostMachine`
+  ADD CONSTRAINT `userhostmachine_host` FOREIGN KEY (`host`) REFERENCES `Host` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `userhostmachine_user` FOREIGN KEY (`user`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
