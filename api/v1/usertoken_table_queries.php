@@ -10,7 +10,7 @@ function usertoken_deleteexisting($userhost_id)
 
     createTransaction($connection);
 
-    $query = $connection->prepare('DELETE FROM UserToken WHERE userhost=:userhost_id');
+    $query = $connection->prepare('DELETE FROM AccessToken WHERE userhost=:userhost_id');
     $query->bindParam(':userhost_id', $userhost_id, PDO::PARAM_INT);
     $query->execute();
 
@@ -40,7 +40,7 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
 
     createTransaction($connection);
 
-    $query = $connection->prepare('INSERT INTO UserToken (token,userhost) VALUES (:token,:userhost_id)');
+    $query = $connection->prepare('INSERT INTO AccessToken (token,userhost) VALUES (:token,:userhost_id)');
     $query->bindParam(':token', $token, PDO::PARAM_STR);
     $query->bindParam(':userhost_id', $userhost_id, PDO::PARAM_INT);
     $query->execute();
@@ -76,7 +76,7 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
 function usertoken_getdata_ifvalid($token)
 {
     $connection = connectdb();
-    $query = $connection->prepare('SELECT id,userhost FROM UserToken WHERE token=:token');
+    $query = $connection->prepare('SELECT id,userhost FROM AccessToken WHERE token=:token');
     $query->bindParam(':token', $token, PDO::PARAM_STR);
     $query->execute();
     if ($query->rowCount() == 0)

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2016 at 11:48 AM
+-- Generation Time: Sep 22, 2016 at 11:57 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -19,6 +19,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `markfina_entitlements`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `AccessToken`
+--
+
+CREATE TABLE `AccessToken` (
+  `id` int(11) NOT NULL,
+  `token` char(32) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userhost` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -137,22 +150,15 @@ CREATE TABLE `UserHostMachineRequest` (
   `expired` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `UserToken`
---
-
-CREATE TABLE `UserToken` (
-  `id` int(11) NOT NULL,
-  `token` varchar(32) NOT NULL,
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `userhost` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `AccessToken`
+--
+ALTER TABLE `AccessToken`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `Host`
@@ -206,15 +212,14 @@ ALTER TABLE `UserHostMachineRequest`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `UserToken`
---
-ALTER TABLE `UserToken`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `AccessToken`
+--
+ALTER TABLE `AccessToken`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `Host`
 --
@@ -254,11 +259,6 @@ ALTER TABLE `UserHostMachine`
 -- AUTO_INCREMENT for table `UserHostMachineRequest`
 --
 ALTER TABLE `UserHostMachineRequest`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `UserToken`
---
-ALTER TABLE `UserToken`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
