@@ -16,6 +16,7 @@ function licensesession_create($license_id, $lic_type_name, $user_id, $product_n
     $query->bindParam(':license_id', $license_id, PDO::PARAM_INT);
     $query->bindParam(':session_token', $session_token, PDO::PARAM_STR);
     $query->execute();
+    $session_id = $connection->lastInsertId();
 
     $certificate = user_table_getcertificate($user_id);
 
@@ -34,6 +35,8 @@ function licensesession_create($license_id, $lic_type_name, $user_id, $product_n
     $connection->commit();
 
     unset($connection);
+
+    storelog('Created session token \''.$session_token.'\' ('.$session_id.') for user '.$user_id);
 
     return $encrypted;
 }
@@ -67,5 +70,7 @@ function licensesession_end($session_id)
     $connection->commit();
 
     unset($connection);
+
+    storelog('Ended session with id '.$session_id);
 }
 ?>
