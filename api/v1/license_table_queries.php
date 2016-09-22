@@ -4,15 +4,15 @@ require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/log.php';
 require_once 'api/v1/licensetype_table_queries.php';
 
-function license_hasproductlicense($user_id,$productname)
+function license_hasproductlicense($user_id,$product_id)
 {
     $connection = connectdb();
 
     // TODO: check that the product name is correct
 
-    $query = $connection->prepare('SELECT id FROM License WHERE user=:userid AND product=:productname');
+    $query = $connection->prepare('SELECT id FROM License WHERE user=:userid AND product=:product_id');
     $query->bindParam(':userid', $user_id, PDO::PARAM_INT);
-    $query->bindParam(':productname', $productname, PDO::PARAM_STR);
+    $query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
     $query->execute();
     $results = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -25,13 +25,13 @@ function license_hasproductlicense($user_id,$productname)
     return $results;
 }
 
-function license_validate($user_id,$productname)
+function license_validate($user_id,$product_id)
 {
     $connection = connectdb();
 
-    $query = $connection->prepare('SELECT id,type FROM License WHERE user=:userid AND product=:productname AND created >= NOW() - INTERVAL duration_days DAY');
+    $query = $connection->prepare('SELECT id,type FROM License WHERE user=:userid AND product=:product_id AND created >= NOW() - INTERVAL duration_days DAY');
     $query->bindParam(':userid', $user_id, PDO::PARAM_INT);
-    $query->bindParam(':productname', $productname, PDO::PARAM_STR);
+    $query->bindParam(':product_id', $product_id, PDO::PARAM_STR);
     $query->execute();
     $results = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -44,7 +44,7 @@ function license_validate($user_id,$productname)
     return $results;
 }
 
-function license_granttrial($user_id,$productname)
+function license_granttrial($user_id,$product_id)
 {
     $trial_license_data = licensetype_getdata('Trial');
 
@@ -52,11 +52,11 @@ function license_granttrial($user_id,$productname)
 
     createTransaction($connection);
 
-    $query = $connection->prepare('INSERT INTO License (user,type,duration_days,product) VALUES (:user_id,:type,:duration,:product)');
+    $query = $connection->prepare('INSERT INTO License (user,type,duration_days,product) VALUES (:user_id,:type,:duration,:product_id)');
     $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $query->bindParam(':type', $trial_license_data['id'], PDO::PARAM_INT);
     $query->bindParam(':duration', $trial_license_data['duration_days'], PDO::PARAM_INT);
-    $query->bindParam(':product', $productname, PDO::PARAM_STR);
+    $query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
     $query->execute();
 
     $new_license_id = $connection->lastInsertId();

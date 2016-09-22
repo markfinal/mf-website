@@ -4,6 +4,7 @@ require_once 'api/v1/usertoken_table_queries.php';
 require_once 'api/v1/license_table_queries.php';
 require_once 'api/v1/licensesession_table_queries.php';
 require_once 'api/v1/opensslutils.php';
+require_once 'api/v1/product_table_queries.php';
 
 // ensure that the token passed in the JSON can be found in the database
 // and that the signature of the JSON data can be verified by the public key for the user
@@ -77,19 +78,20 @@ function licenserequest()
 
     $token_data = usertoken_getdata_ifvalid($json['token']);
     $user_and_host = userhostmachine_table_getuserandhost($token_data['userhost']);
+    $product_id = product_getid($json['productname']);
 
     // is any license for user on this product available?
     // do not check validity
-    $license_available = license_hasproductlicense($user_and_host['user'], $json['productname']);
+    $license_available = license_hasproductlicense($user_and_host['user'], $product_id);
     if (is_null($license_available))
     {
         // user has never used this product before - grant them a trial
         // we'll be able to upgrade this to a purchased copy later
-        license_granttrial($user_and_host['user'], $json['productname']);
+        license_granttrial($user_and_host['user'], $product_id);
     }
 
     // now check validity
-    $license_valid = license_validate($user_and_host['user'], $json['productname']);
+    $license_valid = license_validate($user_and_host['user'], $product_id);
     if (is_null($license_valid))
     {
         $response = array();

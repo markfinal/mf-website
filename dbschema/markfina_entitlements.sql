@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2016 at 12:07 PM
+-- Generation Time: Sep 22, 2016 at 12:23 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -57,7 +57,7 @@ CREATE TABLE `License` (
   `type` int(11) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `duration_days` int(11) NOT NULL,
-  `product` varchar(64) NOT NULL
+  `product` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -110,6 +110,24 @@ CREATE TABLE `Log` (
   `host` int(11) DEFAULT NULL,
   `session` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Product`
+--
+
+CREATE TABLE `Product` (
+  `id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Product`
+--
+
+INSERT INTO `Product` (`id`, `name`) VALUES
+(1, 'Director');
 
 -- --------------------------------------------------------
 
@@ -193,6 +211,12 @@ ALTER TABLE `Log`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `Product`
+--
+ALTER TABLE `Product`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `User`
 --
 ALTER TABLE `User`
@@ -245,6 +269,11 @@ ALTER TABLE `LicenseType`
 -- AUTO_INCREMENT for table `Log`
 --
 ALTER TABLE `Log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Product`
+--
+ALTER TABLE `Product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `User`

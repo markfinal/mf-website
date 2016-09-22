@@ -29,6 +29,7 @@ define('ERR_LICENSE_ACCESS_TOKEN_INVALID',         503);
 define('ERR_LICENSE_REQUEST_DATA_NOT_VERIFIED',    504);
 define('ERR_LICENSE_TYPE_UNKNOWN',                 505);
 define('ERR_LICENSE_EXPIRED',                      506);
+define('ERR_LICENSE_PRODUCT_UNKNOWN',              507);
 
 // license request error codes
 define('ERR_LICENSE_RETURN_DATA_NOT_SPECIFIED',    601);
