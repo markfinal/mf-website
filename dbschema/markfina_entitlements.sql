@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 21, 2016 at 02:45 PM
+-- Generation Time: Sep 22, 2016 at 11:48 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -31,6 +31,56 @@ CREATE TABLE `Host` (
   `MAC` varchar(64) NOT NULL,
   `RevokeReason` varchar(4096) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `License`
+--
+
+CREATE TABLE `License` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `duration_days` int(11) NOT NULL,
+  `product` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `LicenseSession`
+--
+
+CREATE TABLE `LicenseSession` (
+  `id` int(11) NOT NULL,
+  `license` int(11) NOT NULL,
+  `session_token` char(32) NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ended` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `LicenseType`
+--
+
+CREATE TABLE `LicenseType` (
+  `id` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `duration_days` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `LicenseType`
+--
+
+INSERT INTO `LicenseType` (`id`, `name`, `duration_days`) VALUES
+(1, 'Trial', 30),
+(2, 'Purchased', 366),
+(3, 'Development', 8192);
 
 -- --------------------------------------------------------
 
@@ -95,7 +145,7 @@ CREATE TABLE `UserHostMachineRequest` (
 
 CREATE TABLE `UserToken` (
   `id` int(11) NOT NULL,
-  `token` blob NOT NULL,
+  `token` varchar(32) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `userhost` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -110,6 +160,24 @@ CREATE TABLE `UserToken` (
 ALTER TABLE `Host`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `MAC` (`MAC`);
+
+--
+-- Indexes for table `License`
+--
+ALTER TABLE `License`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `LicenseSession`
+--
+ALTER TABLE `LicenseSession`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `LicenseType`
+--
+ALTER TABLE `LicenseType`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `Log`
@@ -151,6 +219,21 @@ ALTER TABLE `UserToken`
 -- AUTO_INCREMENT for table `Host`
 --
 ALTER TABLE `Host`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `License`
+--
+ALTER TABLE `License`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `LicenseSession`
+--
+ALTER TABLE `LicenseSession`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `LicenseType`
+--
+ALTER TABLE `LicenseType`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `Log`

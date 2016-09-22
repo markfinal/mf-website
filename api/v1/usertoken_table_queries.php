@@ -61,7 +61,7 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
     $connection->commit();
 
     $response = array();
-    $response['encryptedtoken'] = base64_encode($encrypted_token);
+    $response['accesstoken'] = base64_encode($encrypted_token);
     $response['length'] = strlen($encrypted_token);
 
     header('Content-Type: application/json', true, 200);
