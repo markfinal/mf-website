@@ -4,7 +4,22 @@ require_once 'api/v1/dbutils.php';
 function storelog($message, $user_id=NULL, $host_id=NULL, $session_id=NULL)
 {
     $token = md5(uniqid($message, true));
-    error_log('['.$token.'] '.$message);
+
+    $log_text = '['.$token.'] ';
+    $log_text .= $message;
+    if (!is_null($user_id))
+    {
+        $log_text .= ' [user='.$user_id.']';
+    }
+    if (!is_null($host_id))
+    {
+        $log_text .= ' [host='.$host_id.']';
+    }
+    if (!is_null($session_id))
+    {
+        $log_text .= ' [session='.$session_id.']';
+    }
+    error_log($log_text);
 
     try
     {
