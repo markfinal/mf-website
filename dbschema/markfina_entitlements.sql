@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2016 at 11:57 AM
+-- Generation Time: Sep 22, 2016 at 12:07 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -107,7 +107,8 @@ CREATE TABLE `Log` (
   `message` varchar(4096) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user` int(11) DEFAULT NULL,
-  `host` int(11) DEFAULT NULL
+  `host` int(11) DEFAULT NULL,
+  `session` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

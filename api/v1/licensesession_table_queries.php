@@ -36,7 +36,7 @@ function licensesession_create($license_id, $lic_type_name, $user_id, $product_n
 
     unset($connection);
 
-    storelog('Created session token \''.$session_token.'\' ('.$session_id.') for user '.$user_id);
+    storelog('Created session token \''.$session_token.'\'', $user_id, NULL, $session_id);
 
     return $encrypted;
 }
@@ -71,6 +71,6 @@ function licensesession_end($session_id)
 
     unset($connection);
 
-    storelog('Ended session with id '.$session_id);
+    storelog('Ended session', NULL, NULL, $session_id);
 }
 ?>
