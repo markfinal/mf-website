@@ -40,7 +40,7 @@ function verifyreturn()
     $session_data = licensesession_getdata_ifvalid($json['session']);
     if (NULL == $session_data)
     {
-        storelog('License session was not found in the database');
+        storelog('License session \''.$json['session'].'\' was not found in the database');
         $response = array();
         $response['errormessage'] = 'Session token is invalid';
         $response['errorcode'] = ERR_LICENSE_SESSION_TOKEN_INVALID;

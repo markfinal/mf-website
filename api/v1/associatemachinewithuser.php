@@ -92,6 +92,7 @@ function associatemachinewithuser()
 
     $response = array();
     $response['url'] = $url;
+    $response['errorcode'] = ERR_NONE;
 
     echo json_encode($response);
 

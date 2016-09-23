@@ -25,7 +25,7 @@ function host_table_get_id($MAC, $num_user_machines, $max_machines)
         }
 
         $response = array();
-        $response['errormessage'] = 'The MAC address is not known';
+        $response['errormessage'] = 'The MAC address has not been registered';
         $response['errorcode'] = ERR_UNKNOWN_MAC_ADDRESS;
 
         header('Content-Type: application/json', true, 404);
