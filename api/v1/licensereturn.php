@@ -11,7 +11,7 @@ require_once 'api/v1/opensslutils.php';
 function verifyreturn()
 {
     clear_openssl_errors();
-    if (!array_key_exists('json', $_POST))
+    if (!array_key_exists('json', $_POST) || empty($_POST['json']))
     {
         storelog('No JSON in the license return data');
         $response = array();
@@ -22,7 +22,7 @@ function verifyreturn()
         echo json_encode($response);
         exit();
     }
-    if (!array_key_exists('sig', $_POST))
+    if (!array_key_exists('sig', $_POST) || empty($_POST['sig']))
     {
         storelog('No JSON signature in the license return data');
         $response = array();

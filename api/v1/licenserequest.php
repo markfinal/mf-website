@@ -11,7 +11,7 @@ require_once 'api/v1/product_table_queries.php';
 function verifyrequest()
 {
     clear_openssl_errors();
-    if (!array_key_exists('json', $_POST))
+    if (!array_key_exists('json', $_POST) || empty($_POST['json']))
     {
         $response = array();
         $response['errormessage'] = 'No license request data was provided';
@@ -21,7 +21,7 @@ function verifyrequest()
         echo json_encode($response);
         exit();
     }
-    if (!array_key_exists('sig', $_POST))
+    if (!array_key_exists('sig', $_POST) || empty($_POST['sig']))
     {
         $response = array();
         $response['errormessage'] = 'No license request signature was provided';

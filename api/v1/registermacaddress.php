@@ -6,7 +6,7 @@ require_once 'api/v1/log.php';
 
 function registermacaddress()
 {
-    if (!array_key_exists('MAC', $_POST))
+    if (!array_key_exists('MAC', $_POST) || empty($_POST['MAC']))
     {
         $response = array();
         $response['errormessage'] = 'A MAC address must be provided';

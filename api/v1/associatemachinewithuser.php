@@ -8,7 +8,7 @@ require_once 'api/v1/userhostmachine_table_queries.php';
 
 function associatemachinewithuser()
 {
-    if (!array_key_exists('email', $_POST))
+    if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
         $response = array();
         $response['errormessage'] = 'An email address must be provided';
@@ -18,7 +18,7 @@ function associatemachinewithuser()
         echo json_encode($response);
         return;
     }
-    if (!array_key_exists('MAC', $_POST))
+    if (!array_key_exists('MAC', $_POST) || empty($_POST['MAC']))
     {
         $response = array();
         $response['errormessage'] = 'The MAC address of the computer must be provided';

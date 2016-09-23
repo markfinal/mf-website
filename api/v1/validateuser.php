@@ -18,7 +18,7 @@ function var_dump_error_log($object)
 // Returns an expiring security token.
 function validateuser()
 {
-    if (!array_key_exists('email', $_POST))
+    if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
         $response = array();
         $response['errormessage'] = 'An email address must be provided';
@@ -41,7 +41,7 @@ function validateuser()
 
     $userrow = user_table_get_id($_POST['email']);
 
-    if (!array_key_exists('MAC', $_POST))
+    if (!array_key_exists('MAC', $_POST) || empty($_POST['MAC']))
     {
         $response = array();
         $response['errormessage'] = 'The MAC address of the computer must be provided';

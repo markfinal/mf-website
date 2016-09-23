@@ -6,7 +6,7 @@ require_once 'api/v1/log.php';
 
 function registeruser()
 {
-    if (!array_key_exists('email', $_POST))
+    if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
         $response = array();
         $response['errormessage'] = 'An email address must be provided';
@@ -26,7 +26,7 @@ function registeruser()
         echo json_encode($response);
         return;
     }
-    if (!array_key_exists('certificate', $_POST))
+    if (!array_key_exists('certificate', $_POST) || empty($_POST['certificate']))
     {
         $response = array();
         $response['errormessage'] = 'A certificate must be provided';
