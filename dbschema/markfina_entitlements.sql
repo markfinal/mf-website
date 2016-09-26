@@ -92,7 +92,7 @@ CREATE TABLE `LicenseType` (
 --
 
 INSERT INTO `LicenseType` (`id`, `name`, `duration_days`) VALUES
-(1, 'Trial', 30),
+(1, 'Trial', 31),
 (2, 'Purchased', 366),
 (3, 'Development', 8192);
 
