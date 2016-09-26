@@ -29,7 +29,7 @@ function license_validate($user_id,$product_id)
 {
     $connection = connectdb();
 
-    $query = $connection->prepare('SELECT id,type FROM License WHERE user=:userid AND product=:product_id AND created >= NOW() - INTERVAL duration_days DAY');
+    $query = $connection->prepare('SELECT id,type,TIMESTAMPDIFF(DAY,NOW(),TIMESTAMPADD(DAY,duration_days,created)) FROM License WHERE user=:userid AND product=:product_id AND NOW() <= TIMESTAMPADD(DAY,duration_days,created)');
     $query->bindParam(':userid', $user_id, PDO::PARAM_INT);
     $query->bindParam(':product_id', $product_id, PDO::PARAM_STR);
     $query->execute();
