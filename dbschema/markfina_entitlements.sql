@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2016 at 01:02 PM
+-- Generation Time: Sep 26, 2016 at 03:53 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.2
 
@@ -71,7 +71,8 @@ CREATE TABLE `LicenseSession` (
   `license` int(11) NOT NULL,
   `session_token` char(32) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ended` datetime DEFAULT NULL
+  `ended` datetime DEFAULT NULL,
+  `product_version` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
