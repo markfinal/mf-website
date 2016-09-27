@@ -31,7 +31,7 @@ function user_table_getcertificate($id)
     $connection = connectdb();
 
     $query = $connection->prepare('SELECT certificate FROM User WHERE id=:id');
-    $query->bindParam(':id', $id, PDO::PARAM_STR);
+    $query->bindParam(':id', $id, PDO::PARAM_INT);
     $query->execute();
     $result = $query->fetch(PDO::FETCH_ASSOC);
 
