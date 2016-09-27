@@ -2,6 +2,46 @@
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
 
+function host_table_insert($MAC)
+{
+    $connection = connectdb();
+
+    createTransaction($connection);
+
+    $insert_mac_address = $connection->prepare('INSERT INTO Host (MAC) VALUES (:MAC)');
+    $insert_mac_address->bindParam(':MAC', $MAC, PDO::PARAM_STR);
+    try
+    {
+        $insert_mac_address->execute();
+    }
+    catch (PDOException $e)
+    {
+        if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
+        {
+            $response = array();
+            $response['errormessage'] = 'The MAC address is already in use';
+            $response['errorcode'] = ERR_MAC_ADDRESS_ALREADY_INUSE;
+
+            header('Content-Type: application/json', true, 409);
+            echo json_encode($response);
+            return;
+        }
+        throw $e;
+    }
+    $mac_address_id = intval($connection->lastInsertId());
+
+    $connection->commit();
+    storelog('Registered MAC address '.$MAC, $mac_address_id);
+
+    $response = array();
+    $response['mac_address_id'] = $mac_address_id;
+
+    header('Content-Type: application/json', true, 201);
+    echo json_encode($response);
+
+    unset($connection);
+}
+
 function host_table_get_id($MAC, $num_user_machines, $max_machines)
 {
     $connection = connectdb();

@@ -15,6 +15,8 @@ define('ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER', 203);
 define('ERR_MAC_ADDRESS_ALREADY_INUSE',            204);
 define('ERR_INSUFFICIENT_FREE_MAC_ADDRESSES',      205);
 define('ERR_MAC_ADDRESS_INCORRECT_FORMAT',         206);
+define('ERR_MAC_ADDRESS_SIG_NOT_SPECIFIED',        207);
+define('ERR_MAC_ADDRESS_NOT_VERIFIED',             208);
 
 // certificate error codes
 define('ERR_CERTIFICATE_NOT_SPECIFIED',            301);

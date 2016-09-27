@@ -3,6 +3,7 @@
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/log.php';
+require_once 'api/v1/host_table_queries.php';
 
 function registermacaddress()
 {
@@ -16,45 +17,86 @@ function registermacaddress()
         echo json_encode($response);
         return;
     }
-
-    // ensure that all MAC addresses are uppercase
-    $MACaddress = strtoupper($_POST['MAC']);
-
-    $connection = connectdb();
-
-    createTransaction($connection);
-
-    $insert_mac_address = $connection->prepare('INSERT INTO Host (MAC) VALUES (:MAC)');
-    $insert_mac_address->bindParam(':MAC', $MACaddress, PDO::PARAM_STR);
-    try
+    if (!filter_var($_POST['MAC'], FILTER_VALIDATE_MAC))
     {
-        $insert_mac_address->execute();
+        $response = array();
+        $response['errormessage'] = 'The MAC address used an incorrect format';
+        $response['errorcode'] = ERR_MAC_INCORRECT_FORMAT;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
     }
-    catch (PDOException $e)
+    if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
-        if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
-        {
-            $response = array();
-            $response['errormessage'] = 'The MAC address is already in use';
-            $response['errorcode'] = ERR_MAC_ADDRESS_ALREADY_INUSE;
+        $response = array();
+        $response['errormessage'] = 'An email address must be provided';
+        $response['errorcode'] = ERR_EMAIL_NOT_SPECIFIED;
 
-            header('Content-Type: application/json', true, 409);
-            echo json_encode($response);
-            return;
-        }
-        throw $e;
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
     }
-    $mac_address_id = intval($connection->lastInsertId());
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+    {
+        $response = array();
+        $response['errormessage'] = 'The email address used an incorrect format';
+        $response['errorcode'] = ERR_EMAIL_INCORRECT_FORMAT;
 
-    $connection->commit();
-    storelog('Registered MAC address '.$MACaddress, $mac_address_id);
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
+    if (!array_key_exists('sig', $_POST) || empty($_POST['sig']))
+    {
+        $response = array();
+        $response['errormessage'] = 'Signature to verify the user was not specified';
+        $response['errorcode'] = ERR_MAC_ADDRESS_SIG_NOT_SPECIFIED;
 
-    $response = array();
-    $response['mac_address_id'] = $mac_address_id;
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
 
-    header('Content-Type: application/json', true, 201);
-    echo json_encode($response);
+    // TODO: are MAC addresses delivered in the same format from all OSs?
+    // i.e. will a dual boot machine show the same?
+    $MACaddress = $_POST['MAC'];
 
-    unset($connection);
+    $user_data = user_table_get_id($_POST['email']);
+
+    $certificate = $user_data['certificate'];
+
+    $sigb64 = $_POST['sig'];
+    $sig = base64_decode($sigb64);
+
+    $verified = verify_client_request($MACaddress, $sig, $certificate);
+    if (1 == $verified)
+    {
+        host_table_insert($MACaddress);
+        return;
+    }
+
+    if (0 == $verified)
+    {
+        storelog('MAC address could not be verified by user certificate: '.openssl_error_string());
+        $response = array();
+        $response['errormessage'] = 'Cannot verify MAC address by user';
+        $response['errorcode'] = ERR_MAC_ADDRESS_NOT_VERIFIED;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        exit();
+    }
+    else
+    {
+        storelog('OpenSSL error while adding MAC address: '.openssl_error_string());
+        $response = array();
+        $response['errormessage'] = 'Cannot verify MAC address by user';
+        $response['errorcode'] = ERR_SERVER_ERROR;
+
+        header('Content-Type: application/json', true, 500);
+        echo json_encode($response);
+        exit();
+    }
 }
 ?>
