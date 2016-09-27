@@ -10,7 +10,6 @@ require_once 'api/v1/opensslutils.php';
 // and that the signature of the JSON data can be verified by the public key for the user
 function verifyreturn()
 {
-    clear_openssl_errors();
     if (!array_key_exists('json', $_POST) || empty($_POST['json']))
     {
         storelog('No JSON in the license return data');
@@ -56,10 +55,13 @@ function verifyreturn()
     $sigb64 = $_POST['sig'];
     $sig = base64_decode($sigb64);
 
-    $public_res = openssl_pkey_get_public($certificate);
-    $result = openssl_verify($raw_json, $sig, $public_res, OPENSSL_ALGO_SHA1);
-    openssl_free_key($public_res);
-    if ($result < 1)
+    $verified = verify_client_request($raw_json, $sig, $certificate);
+    if (1 == $verified)
+    {
+        return $session_data['id'];
+    }
+
+    if (0 == $verified)
     {
         storelog('License return data could not be verified by user certificate: '.openssl_error_string());
         $response = array();
@@ -70,8 +72,17 @@ function verifyreturn()
         echo json_encode($response);
         exit();
     }
+    else
+    {
+        storelog('OpenSSL error verifying license return data: '.openssl_error_string());
+        $response = array();
+        $response['errormessage'] = 'Cannot verify license return for user';
+        $response['errorcode'] = ERR_SERVER_ERROR;
 
-    return $session_data['id'];
+        header('Content-Type: application/json', true, 500);
+        echo json_encode($response);
+        exit();
+    }
 }
 
 function licensereturn()
