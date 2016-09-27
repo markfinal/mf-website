@@ -18,11 +18,31 @@ function associatemachinewithuser()
         echo json_encode($response);
         return;
     }
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+    {
+        $response = array();
+        $response['errormessage'] = 'The email address used an incorrect format';
+        $response['errorcode'] = ERR_EMAIL_INCORRECT_FORMAT;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
     if (!array_key_exists('MAC', $_POST) || empty($_POST['MAC']))
     {
         $response = array();
         $response['errormessage'] = 'The MAC address of the computer must be provided';
         $response['errorcode'] = ERR_MAC_ADDRESS_NOT_SPECIFIED;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
+    if (!filter_var($_POST['MAC'], FILTER_VALIDATE_MAC))
+    {
+        $response = array();
+        $response['errormessage'] = 'The MAC address used an incorrect format';
+        $response['errorcode'] = ERR_MAC_INCORRECT_FORMAT;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
