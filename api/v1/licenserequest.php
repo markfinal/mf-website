@@ -59,7 +59,7 @@ function verifyrequest()
     openssl_free_key($public_res);
     if ($result < 1)
     {
-        error_log(openssl_error_string());
+        storelog('License request data could not be verified by user certificate: '.openssl_error_string());
         $response = array();
         $response['errormessage'] = 'Cannot verify license request for user';
         $response['errorcode'] = ERR_LICENSE_REQUEST_DATA_NOT_VERIFIED;
