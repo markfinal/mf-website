@@ -51,6 +51,16 @@ function validateuser()
         echo json_encode($response);
         return;
     }
+    if (!filter_var($_POST['MAC'], FILTER_VALIDATE_MAC))
+    {
+        $response = array();
+        $response['errormessage'] = 'The MAC address used an incorrect format';
+        $response['errorcode'] = ERR_MAC_INCORRECT_FORMAT;
+
+        header('Content-Type: application/json', true, 400);
+        echo json_encode($response);
+        return;
+    }
 
     // ensure that all MAC addresses are uppercase
     $MACaddress = strtoupper($_POST['MAC']);
