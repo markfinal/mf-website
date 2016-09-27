@@ -5,7 +5,7 @@ define('ERR_NONE',                                 0);
 // email related error codes
 define('ERR_EMAIL_NOT_SPECIFIED',                  101);
 define('ERR_EMAIL_INCORRECT_FORMAT',               102);
-define('ERR_UNKNOWN_EMAIL',                        103);
+define('ERR_EMAIL_UNREGISTERED',                   103);
 define('ERR_EMAIL_ALREADY_INUSE',                  104);
 
 // mac address error codes
