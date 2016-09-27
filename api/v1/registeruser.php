@@ -37,66 +37,6 @@ function registeruser()
         return;
     }
 
-    /*
-    // TESTING encryption, decryption, signing and verifying
-    $certificate = $_POST['certificate'];
-    error_log('Certificate');
-    error_log(strlen($certificate));
-    error_log($certificate);
-    $privatekey= $_POST['privatekey'];
-    error_log('Private key');
-    error_log(strlen($privatekey));
-    error_log($privatekey);
-
-    $private_res = openssl_pkey_get_private($privatekey);
-    if (0 == $private_res)
-    {
-        error_log(openssl_error_string());
-    }
-
-    // note that this HAS to be an x509 certificate
-    $public_res = openssl_pkey_get_public($certificate);
-    if (0 == $public_res)
-    {
-        error_log(openssl_error_string());
-    }
-
-    $cleartext = "Hello world";
-    if (!openssl_public_encrypt($cleartext, $encrypted, $public_res, OPENSSL_PKCS1_OAEP_PADDING))
-    {
-        error_log(openssl_error_string());
-    }
-    if (!openssl_private_decrypt($encrypted, $decrypted, $privatekey, OPENSSL_PKCS1_OAEP_PADDING))
-    {
-        error_log(openssl_error_string());
-    }
-    error_log('Original '.$cleartext);
-    error_log('Encrypt  '.$encrypted);
-    error_log('Decrypt  '.$decrypted);
-
-
-
-    if (!openssl_sign($cleartext, $signature, $privatekey))
-    {
-        error_log(openssl_error_string());
-    }
-    error_log('Signature '.$signature);
-
-    $verify = openssl_verify($cleartext, $signature, $pk);
-    if (1 == $verify)
-    {
-        error_log("Verified");
-    }
-    else if (0 == $verify)
-    {
-        error_log("Not Verified");
-    }
-    else
-    {
-        error_log(openssl_error_string());
-    }
-    */
-
     $connection = connectdb();
 
     createTransaction($connection);
