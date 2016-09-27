@@ -10,7 +10,7 @@ define('ERR_EMAIL_ALREADY_INUSE',                  104);
 
 // mac address error codes
 define('ERR_MAC_ADDRESS_NOT_SPECIFIED',            201);
-define('ERR_UNKNOWN_MAC_ADDRESS',                  202);
+define('ERR_MAC_ADDRESS_NOT_REGISTERED',           202);
 define('ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER', 203);
 define('ERR_MAC_ADDRESS_ALREADY_INUSE',            204);
 define('ERR_INSUFFICIENT_FREE_MAC_ADDRESSES',      205);
