@@ -34,7 +34,7 @@ function usertoken_createnew($email,$MAC,$certificate,$userhost_id)
     // the user is now authorised to use software on this machine
     // return a token allowing access to licensing code
     // only the owner of the private key will be able to extract the token
-    $token = md5(uniqid($_POST['email'].$_POST['MAC'], true));
+    $token = md5(uniqid($email.$MAC, true));
  
     $connection = connectdb();
 

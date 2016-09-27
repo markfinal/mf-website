@@ -7,7 +7,7 @@ function user_table_get_id($email)
     $connection = connectdb();
 
     $query = $connection->prepare('SELECT id,certificate,maxmachines FROM User WHERE email=:email');
-    $query->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->execute();
     $result = $query->fetch(PDO::FETCH_ASSOC);
     if (0 == $result['id'])
