@@ -9,7 +9,7 @@ function registeruser()
     if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
         $response = array();
-        $response['errormessage'] = 'An email address must be provided';
+        $response['errormessage'] = 'An email address must be provided.';
         $response['errorcode'] = ERR_EMAIL_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -19,7 +19,7 @@ function registeruser()
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
     {
         $response = array();
-        $response['errormessage'] = 'The email address used an incorrect format';
+        $response['errormessage'] = 'The email address used an incorrect format.';
         $response['errorcode'] = ERR_EMAIL_INCORRECT_FORMAT;
 
         header('Content-Type: application/json', true, 400);
@@ -29,7 +29,7 @@ function registeruser()
     if (!array_key_exists('certificate', $_POST) || empty($_POST['certificate']))
     {
         $response = array();
-        $response['errormessage'] = 'A certificate must be provided';
+        $response['errormessage'] = 'A certificate must be provided.';
         $response['errorcode'] = ERR_CERTIFICATE_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -53,7 +53,7 @@ function registeruser()
         if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
         {
             $response = array();
-            $response['errormessage'] = 'The email address is already in use';
+            $response['errormessage'] = 'The email address is already in use.';
             $response['errorcode'] = ERR_EMAIL_ALREADY_INUSE;
 
             header('Content-Type: application/json', true, 409);

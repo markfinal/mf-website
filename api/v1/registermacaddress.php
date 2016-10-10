@@ -10,7 +10,7 @@ function registermacaddress()
     if (!array_key_exists('MAC', $_POST) || empty($_POST['MAC']))
     {
         $response = array();
-        $response['errormessage'] = 'A MAC address must be provided';
+        $response['errormessage'] = 'A MAC address must be provided.';
         $response['errorcode'] = ERR_MAC_ADDRESS_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -20,7 +20,7 @@ function registermacaddress()
     if (!filter_var($_POST['MAC'], FILTER_VALIDATE_MAC))
     {
         $response = array();
-        $response['errormessage'] = 'The MAC address used an incorrect format';
+        $response['errormessage'] = 'The MAC address used an incorrect format.';
         $response['errorcode'] = ERR_MAC_INCORRECT_FORMAT;
 
         header('Content-Type: application/json', true, 400);
@@ -30,7 +30,7 @@ function registermacaddress()
     if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
         $response = array();
-        $response['errormessage'] = 'An email address must be provided';
+        $response['errormessage'] = 'An email address must be provided.';
         $response['errorcode'] = ERR_EMAIL_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -40,7 +40,7 @@ function registermacaddress()
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
     {
         $response = array();
-        $response['errormessage'] = 'The email address used an incorrect format';
+        $response['errormessage'] = 'The email address used an incorrect format.';
         $response['errorcode'] = ERR_EMAIL_INCORRECT_FORMAT;
 
         header('Content-Type: application/json', true, 400);
@@ -50,7 +50,7 @@ function registermacaddress()
     if (!array_key_exists('sig', $_POST) || empty($_POST['sig']))
     {
         $response = array();
-        $response['errormessage'] = 'Signature to verify the user was not specified';
+        $response['errormessage'] = 'Signature to verify the user was not specified.';
         $response['errorcode'] = ERR_MAC_ADDRESS_SIG_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -80,7 +80,7 @@ function registermacaddress()
     {
         storelog('MAC address could not be verified by user certificate: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify MAC address by user';
+        $response['errormessage'] = 'Cannot verify MAC address by user.';
         $response['errorcode'] = ERR_MAC_ADDRESS_NOT_VERIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -91,7 +91,7 @@ function registermacaddress()
     {
         storelog('OpenSSL error while adding MAC address: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify MAC address by user';
+        $response['errormessage'] = 'Cannot verify MAC address by user.';
         $response['errorcode'] = ERR_SERVER_ERROR;
 
         header('Content-Type: application/json', true, 500);

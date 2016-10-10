@@ -14,7 +14,7 @@ function verifyreturn()
     {
         storelog('No JSON in the license return data');
         $response = array();
-        $response['errormessage'] = 'No license return data was provided';
+        $response['errormessage'] = 'No license return data was provided.';
         $response['errorcode'] = ERR_LICENSE_RETURN_DATA_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -25,7 +25,7 @@ function verifyreturn()
     {
         storelog('No JSON signature in the license return data');
         $response = array();
-        $response['errormessage'] = 'No license return signature was provided';
+        $response['errormessage'] = 'No license return signature was provided.';
         $response['errorcode'] = ERR_LICENSE_RETURN_SIG_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -41,7 +41,7 @@ function verifyreturn()
     {
         storelog('License session \''.$json['session'].'\' was not found in the database');
         $response = array();
-        $response['errormessage'] = 'Session token is invalid';
+        $response['errormessage'] = 'Session token is invalid.';
         $response['errorcode'] = ERR_LICENSE_SESSION_TOKEN_INVALID;
 
         header('Content-Type: application/json', true, 400);
@@ -65,7 +65,7 @@ function verifyreturn()
     {
         storelog('License return data could not be verified by user certificate: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify license return for user';
+        $response['errormessage'] = 'Cannot verify license return for user.';
         $response['errorcode'] = ERR_LICENSE_RETURN_DATA_NOT_VERIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -76,7 +76,7 @@ function verifyreturn()
     {
         storelog('OpenSSL error verifying license return data: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify license return for user';
+        $response['errormessage'] = 'Cannot verify license return for user.';
         $response['errorcode'] = ERR_SERVER_ERROR;
 
         header('Content-Type: application/json', true, 500);
@@ -93,7 +93,7 @@ function licensereturn()
 
     $response = array();
     $response['errorcode'] = ERR_NONE;
-    $response['errormessage'] = 'License session returned';
+    $response['errormessage'] = 'License session returned.';
 
     header('Content-Type: application/json', true, 200);
     echo json_encode($response);

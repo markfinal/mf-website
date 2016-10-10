@@ -23,7 +23,7 @@ function verifyrequest()
     if (!array_key_exists('sig', $_POST) || empty($_POST['sig']))
     {
         $response = array();
-        $response['errormessage'] = 'No license request signature was provided';
+        $response['errormessage'] = 'No license request signature was provided.';
         $response['errorcode'] = ERR_LICENSE_REQUEST_SIG_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -38,7 +38,7 @@ function verifyrequest()
     if (NULL == $token_data)
     {
         $response = array();
-        $response['errormessage'] = 'Access token is invalid';
+        $response['errormessage'] = 'Access token is invalid.';
         $response['errorcode'] = ERR_LICENSE_ACCESS_TOKEN_INVALID;
 
         header('Content-Type: application/json', true, 400);
@@ -63,7 +63,7 @@ function verifyrequest()
     {
         storelog('License request data could not be verified by user certificate: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify license request for user';
+        $response['errormessage'] = 'Cannot verify license request for user.';
         $response['errorcode'] = ERR_LICENSE_REQUEST_DATA_NOT_VERIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -74,7 +74,7 @@ function verifyrequest()
     {
         storelog('OpenSSL error verifying license request data: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify license request for user';
+        $response['errormessage'] = 'Cannot verify license request for user.';
         $response['errorcode'] = ERR_SERVER_ERROR;
 
         header('Content-Type: application/json', true, 500);
@@ -106,7 +106,7 @@ function licenserequest()
     if (is_null($license_valid))
     {
         $response = array();
-        $response['errormessage'] = 'License has expired';
+        $response['errormessage'] = 'License has expired.';
         $response['errorcode'] = ERR_LICENSE_EXPIRED;
 
         header('Content-Type: application/json', true, 400);

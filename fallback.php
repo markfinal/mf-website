@@ -93,7 +93,7 @@ try
                 if (!isdynamicurl($_SERVER['REQUEST_URI']))
                 {
                     $response = array();
-                    $response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'];
+                    $response['errormessage'] = 'Unrecognized path: '.$_SERVER['REQUEST_URI'].'.';
 
                     header($_SERVER['SERVER_PROTOCOL'].' 404 not found', true, 404);
                     header('Content-Type: application/json', true);

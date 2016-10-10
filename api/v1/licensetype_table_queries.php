@@ -13,7 +13,7 @@ function licensetype_getdata($name)
     if (!$result)
     {
         $response = array();
-        $response['errormessage'] = 'No such license type called \''.$name.'\'';
+        $response['errormessage'] = 'No such license type called \''.$name.'\'.';
         $response['errorcode'] = ERR_LICENSE_TYPE_UNKNOWN;
 
         header('Content-Type: application/json', true, 404);

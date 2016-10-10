@@ -13,7 +13,7 @@ function user_table_get_id($email)
     if (0 == $result['id'])
     {
         $response = array();
-        $response['errormessage'] = 'The email address has not been registered';
+        $response['errormessage'] = 'The email address has not been registered.';
         $response['errorcode'] = ERR_EMAIL_UNREGISTERED;
 
         header('Content-Type: application/json', true, 404);

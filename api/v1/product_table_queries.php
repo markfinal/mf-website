@@ -13,7 +13,7 @@ function product_getid($name)
     if (!$result)
     {
         $response = array();
-        $response['errormessage'] = 'No such product called \''.$name.'\'';
+        $response['errormessage'] = 'No such product called \''.$name.'\'.';
         $response['errorcode'] = ERR_LICENSE_PRODUCT_UNKNOWN;
 
         header('Content-Type: application/json', true, 404);

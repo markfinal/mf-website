@@ -19,7 +19,7 @@ function host_table_insert($MAC)
         if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
         {
             $response = array();
-            $response['errormessage'] = 'The MAC address is already in use';
+            $response['errormessage'] = 'The MAC address is already in use.';
             $response['errorcode'] = ERR_MAC_ADDRESS_ALREADY_INUSE;
 
             header('Content-Type: application/json', true, 409);
@@ -56,7 +56,7 @@ function host_table_get_id($MAC, $num_user_machines, $max_machines)
         if ($num_user_machines + 1 > $max_machines)
         {
             $response = array();
-            $response['errormessage'] = 'Quota of machines has been reached';
+            $response['errormessage'] = 'Quota of machines has been reached.';
             $response['errorcode'] = ERR_INSUFFICIENT_FREE_MAC_ADDRESSES;
 
             header('Content-Type: application/json', true, 412);
@@ -65,7 +65,7 @@ function host_table_get_id($MAC, $num_user_machines, $max_machines)
         }
 
         $response = array();
-        $response['errormessage'] = 'The MAC address has not been registered';
+        $response['errormessage'] = 'The MAC address has not been registered.';
         $response['errorcode'] = ERR_MAC_ADDRESS_NOT_REGISTERED;
 
         header('Content-Type: application/json', true, 404);

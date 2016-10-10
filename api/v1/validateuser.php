@@ -21,7 +21,7 @@ function validateuser()
     if (!array_key_exists('email', $_POST) || empty($_POST['email']))
     {
         $response = array();
-        $response['errormessage'] = 'An email address must be provided';
+        $response['errormessage'] = 'An email address must be provided.';
         $response['errorcode'] = ERR_EMAIL_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -31,7 +31,7 @@ function validateuser()
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
     {
         $response = array();
-        $response['errormessage'] = 'The email address used an incorrect format';
+        $response['errormessage'] = 'The email address used an incorrect format.';
         $response['errorcode'] = ERR_EMAIL_INCORRECT_FORMAT;
 
         header('Content-Type: application/json', true, 400);
@@ -44,7 +44,7 @@ function validateuser()
     if (!array_key_exists('MAC', $_POST) || empty($_POST['MAC']))
     {
         $response = array();
-        $response['errormessage'] = 'The MAC address of the computer must be provided';
+        $response['errormessage'] = 'The MAC address of the computer must be provided.';
         $response['errorcode'] = ERR_MAC_ADDRESS_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
@@ -54,7 +54,7 @@ function validateuser()
     if (!filter_var($_POST['MAC'], FILTER_VALIDATE_MAC))
     {
         $response = array();
-        $response['errormessage'] = 'The MAC address used an incorrect format';
+        $response['errormessage'] = 'The MAC address used an incorrect format.';
         $response['errorcode'] = ERR_MAC_INCORRECT_FORMAT;
 
         header('Content-Type: application/json', true, 400);
