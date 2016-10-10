@@ -11,20 +11,25 @@ function userhostmachine_table_get_id($userid, $hostid)
     $query->bindParam(':host', $hostid, PDO::PARAM_INT);
     $query->execute();
     $user_machine_id = $query->fetchColumn(0);
-    if (0 == $user_machine_id)
-    {
-        $response = array();
-        $response['errormessage'] = 'The MAC address is not associated with the user';
-        $response['errorcode'] = ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER;
-
-        header('Content-Type: application/json', true, 404);
-        echo json_encode($response);
-        exit();
-    }
 
     unset($connection);
 
     return $user_machine_id;
+}
+
+function userhostmachine_table_find_existing_request($email, $MAC)
+{
+    $connection = connectdb();
+
+    $query = $connection->prepare('SELECT id,url,expired FROM UserHostMachineRequest WHERE email=:email AND MAC=:MAC');
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
+    $query->bindParam(':MAC', $MAC, PDO::PARAM_STR);
+    $query->execute();
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    unset($connection);
+
+    return $result;
 }
 
 function userhostmachine_table_getuserandhost($id)

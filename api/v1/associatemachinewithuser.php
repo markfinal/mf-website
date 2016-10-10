@@ -56,11 +56,7 @@ function associatemachinewithuser()
 
     $connection = connectdb();
 
-    $find_existing_request = $connection->prepare('SELECT id,url,expired FROM UserHostMachineRequest WHERE email=:email AND MAC=:MAC');
-    $find_existing_request->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-    $find_existing_request->bindParam(':MAC', $MACaddress, PDO::PARAM_STR);
-    $find_existing_request->execute();
-    $request = $find_existing_request->fetch(PDO::FETCH_ASSOC);
+    $request = userhostmachine_table_find_existing_request($_POST['email'], $MACaddress);
     if (0 == $request['id'])
     {
         createTransaction($connection);
@@ -110,12 +106,13 @@ function associatemachinewithuser()
 
     send_email($_POST['email'], 'Machine activation', $email_message);
 
-    $response = array();
-    $response['url'] = $url;
-    $response['errorcode'] = ERR_NONE;
-
-    echo json_encode($response);
-
     unset($connection);
+
+    $response = array();
+    $response['errormessage'] = 'The MAC address has not yet been associated with the user, but an email has been sent.';
+    $response['errorcode'] = ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER_BUT_SENT;
+
+    header('Content-Type: application/json', true, 404);
+    echo json_encode($response);
 }
 ?>

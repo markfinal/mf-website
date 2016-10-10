@@ -71,6 +71,25 @@ function validateuser()
     // as both user and host are confirmed registered, is there a mapping
     // to authorise using this host by this user?
     $user_machine_id = userhostmachine_table_get_id($userrow['id'], $host_id);
+    if (0 == $user_machine_id)
+    {
+        $existing_request = userhostmachine_table_find_existing_request($_POST['email'], $_POST['MAC']);
+        $response = array();
+        if (0 == $existing_request['id'])
+        {
+            $response['errormessage'] = 'The MAC address is not associated with the user.';
+            $response['errorcode'] = ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER;
+            header('Content-Type: application/json', true, 404);
+        }
+        else
+        {
+            $response['errormessage'] = 'The MAC address has not yet been associated with the user, but an email has been sent.';
+            $response['errorcode'] = ERR_MAC_ADDRESS_NOT_ASSOCIATED_WITH_USER_BUT_SENT;
+            header('Content-Type: application/json', true, 404);
+        }
+        echo json_encode($response);
+        exit();
+    }
 
     usertoken_createnew($_POST['email'], $_POST['MAC'], $userrow['certificate'], $user_machine_id);
 }
