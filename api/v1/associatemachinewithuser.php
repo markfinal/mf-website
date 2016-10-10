@@ -101,6 +101,7 @@ function associatemachinewithuser()
     $email_message = '<html>';
     $email_message .= '<body>';
     $email_message .= '<p>To authorise your machine, click <a href=\''.$full_url.'\'>here</a>. This link is valid for 24 hours only.</p>';
+    $email_message .= '<p>Once your machine has been authorised, please return to the application and continue the licensing steps.</p>';
     $email_message .= '</body>';
     $email_message .= '</html>';
 
