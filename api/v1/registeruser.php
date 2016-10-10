@@ -53,7 +53,7 @@ function registeruser()
         if (MYSQL_ERRCODE_DUPLICATE_KEY === $e->errorInfo[1])
         {
             $response = array();
-            $response['errormessage'] = 'The email address is already in use.';
+            $response['errormessage'] = 'The email address has already been registered.';
             $response['errorcode'] = ERR_EMAIL_ALREADY_INUSE;
 
             header('Content-Type: application/json', true, 409);
