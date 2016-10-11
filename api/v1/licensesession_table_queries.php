@@ -4,7 +4,7 @@ require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/log.php';
 require_once 'api/v1/user_table_queries.php';
 
-function licensesession_create($license_id, $lic_type_name, $user_id, $product_name, $product_version)
+function licensesession_create($license_id, $lic_type_name, $user_id, $product_name, $product_version, $os)
 {
     $connection = connectdb();
 
@@ -12,10 +12,11 @@ function licensesession_create($license_id, $lic_type_name, $user_id, $product_n
 
     createTransaction($connection);
 
-    $query = $connection->prepare('INSERT INTO LicenseSession (license,session_token,product_version) VALUES (:license_id,:session_token,:product_version)');
+    $query = $connection->prepare('INSERT INTO LicenseSession (license,session_token,product_version,operating_system) VALUES (:license_id,:session_token,:product_version,:os)');
     $query->bindParam(':license_id', $license_id, PDO::PARAM_INT);
     $query->bindParam(':session_token', $session_token, PDO::PARAM_STR);
     $query->bindParam(':product_version', $product_version, PDO::PARAM_STR);
+    $query->bindParam(':os', $os, PDO::PARAM_STR);
     $query->execute();
     $session_id = $connection->lastInsertId();
 
@@ -37,7 +38,7 @@ function licensesession_create($license_id, $lic_type_name, $user_id, $product_n
 
     unset($connection);
 
-    storelog('Created session token \''.$session_token.'\' for '.$product_name.' v'.$product_version, $user_id, NULL, $session_id);
+    storelog('Created session token \''.$session_token.'\' for '.$product_name.' v'.$product_version.' on '.$os, $user_id, NULL, $session_id);
 
     return $encrypted;
 }
