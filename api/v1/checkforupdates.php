@@ -2,6 +2,8 @@
 require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/log.php';
 require_once 'api/v1/opensslutils.php';
+require_once 'api/v1/product_table_queries.php';
+require_once 'api/v1/productupdate_table_queries.php';
 
 // ensure that the session passed in the JSON can be found in the database
 // and that the signature of the JSON data can be verified by the public key for the user
@@ -55,7 +57,7 @@ function verifysession()
     $verified = verify_client_request($raw_json, $sig, $certificate);
     if (1 == $verified)
     {
-        return $session_data['id'];
+        return $json;
     }
 
     if (0 == $verified)
@@ -84,11 +86,28 @@ function verifysession()
 
 function checkforupdates()
 {
-    $session_id = verifysession();
+    $json = verifysession();
+
+    $product_id = product_getid($json['productname']);
+    $update_message = productupdate_getupdatemessage(
+        $product_id,
+        $json['product_majorversion'],
+        $json['product_minorversion'],
+        $json['product_patchversion'],
+        $json['product_build'],
+        $json['product_phase']);
 
     $response = array();
-    $response['errorcode'] = ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE;
-    $response['errormessage'] = 'There are no updates available.';
+    if (is_null($update_message))
+    {
+        $response['errorcode'] = ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE;
+        $response['errormessage'] = 'There are no updates available.';
+    }
+    else
+    {
+        $response['errorcode'] = ERR_NONE;
+        $response['errormessage'] = $update_message;
+    }
 
     header('Content-Type: application/json', true, 200);
     echo json_encode($response);
