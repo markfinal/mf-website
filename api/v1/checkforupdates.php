@@ -1,21 +1,18 @@
 <?php
 require_once 'api/v1/errorcodes.php';
 require_once 'api/v1/log.php';
-require_once 'api/v1/usertoken_table_queries.php';
-require_once 'api/v1/license_table_queries.php';
-require_once 'api/v1/licensesession_table_queries.php';
 require_once 'api/v1/opensslutils.php';
 
 // ensure that the session passed in the JSON can be found in the database
 // and that the signature of the JSON data can be verified by the public key for the user
-function verifyreturn()
+function verifysession()
 {
     if (!array_key_exists('json', $_POST) || empty($_POST['json']))
     {
-        storelog('No JSON in the license return data');
+        storelog('No JSON in the check for update data');
         $response = array();
-        $response['errormessage'] = 'No license return data was provided.';
-        $response['errorcode'] = ERR_LICENSE_RETURN_DATA_NOT_SPECIFIED;
+        $response['errormessage'] = 'No check for update data was provided.';
+        $response['errorcode'] = ERR_PRODUCTUPDATE_DATA_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
@@ -23,10 +20,10 @@ function verifyreturn()
     }
     if (!array_key_exists('sig', $_POST) || empty($_POST['sig']))
     {
-        storelog('No JSON signature in the license return data');
+        storelog('No JSON signature in the check for update data');
         $response = array();
-        $response['errormessage'] = 'No license return signature was provided.';
-        $response['errorcode'] = ERR_LICENSE_RETURN_SIG_NOT_SPECIFIED;
+        $response['errormessage'] = 'No check for update signature was provided.';
+        $response['errorcode'] = ERR_PRODUCTUPDATE_SIG_NOT_SPECIFIED;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
@@ -42,7 +39,7 @@ function verifyreturn()
         storelog('License session \''.$json['session'].'\' was not found in the database');
         $response = array();
         $response['errormessage'] = 'Session token is invalid.';
-        $response['errorcode'] = ERR_LICENSE_RETURN_SESSION_TOKEN_INVALID;
+        $response['errorcode'] = ERR_PRODUCTUPDATE_SESSION_TOKEN_INVALID;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
@@ -63,10 +60,10 @@ function verifyreturn()
 
     if (0 == $verified)
     {
-        storelog('License return data could not be verified by user certificate: '.openssl_error_string());
+        storelog('Check for update data could not be verified by user certificate: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify license return for user.';
-        $response['errorcode'] = ERR_LICENSE_RETURN_DATA_NOT_VERIFIED;
+        $response['errormessage'] = 'Cannot verify check for update for user.';
+        $response['errorcode'] = ERR_PRODUCTUPDATE_DATA_NOT_VERIFIED;
 
         header('Content-Type: application/json', true, 400);
         echo json_encode($response);
@@ -74,9 +71,9 @@ function verifyreturn()
     }
     else
     {
-        storelog('OpenSSL error verifying license return data: '.openssl_error_string());
+        storelog('OpenSSL error verifying check for update data: '.openssl_error_string());
         $response = array();
-        $response['errormessage'] = 'Cannot verify license return for user.';
+        $response['errormessage'] = 'Cannot verify check for update for user.';
         $response['errorcode'] = ERR_SERVER_ERROR;
 
         header('Content-Type: application/json', true, 500);
@@ -85,15 +82,13 @@ function verifyreturn()
     }
 }
 
-function licensereturn()
+function checkforupdates()
 {
-    $session_id = verifyreturn();
-
-    licensesession_end($session_id);
+    $session_id = verifysession();
 
     $response = array();
-    $response['errorcode'] = ERR_NONE;
-    $response['errormessage'] = 'License session returned.';
+    $response['errorcode'] = ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE;
+    $response['errormessage'] = 'There are no updates available.';
 
     header('Content-Type: application/json', true, 200);
     echo json_encode($response);

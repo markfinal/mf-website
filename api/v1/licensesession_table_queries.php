@@ -46,7 +46,7 @@ function licensesession_create($license_id, $lic_type_name, $user_id, $product_n
 function licensesession_getdata_ifvalid($session)
 {
     $connection = connectdb();
-    $query = $connection->prepare('SELECT * FROM LicenseSession WHERE session_token=:session_token');
+    $query = $connection->prepare('SELECT * FROM LicenseSession WHERE session_token=:session_token AND ended IS NULL');
     $query->bindParam(':session_token', $session, PDO::PARAM_STR);
     $query->execute();
     if ($query->rowCount() == 0)

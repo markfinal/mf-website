@@ -61,6 +61,7 @@ try
     require_once 'api/v1/dynamicurl.php';
     require_once 'api/v1/licenserequest.php';
     require_once 'api/v1/licensereturn.php';
+    require_once 'api/v1/checkforupdates.php';
 
     switch ($_SERVER['REQUEST_URI'])
     {
@@ -86,6 +87,10 @@ try
 
         case '/api/v1/licensereturn':
             licensereturn();
+            break;
+
+        case '/api/v1/checkforupdate':
+            checkforupdates();
             break;
 
         default:
