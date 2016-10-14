@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 11, 2016 at 10:49 AM
+-- Generation Time: Oct 14, 2016 at 07:35 PM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -134,6 +134,23 @@ INSERT INTO `Product` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ProductUpdate`
+--
+
+CREATE TABLE `ProductUpdate` (
+  `update_id` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  `major_version` int(11) NOT NULL,
+  `minor_version` int(11) NOT NULL,
+  `patch_version` int(11) NOT NULL,
+  `build` int(11) NOT NULL,
+  `phase` char(1) NOT NULL,
+  `message` varchar(8192) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `User`
 --
 
@@ -227,6 +244,12 @@ ALTER TABLE `Product`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ProductUpdate`
+--
+ALTER TABLE `ProductUpdate`
+  ADD PRIMARY KEY (`update_id`);
+
+--
 -- Indexes for table `User`
 --
 ALTER TABLE `User`
@@ -287,6 +310,11 @@ ALTER TABLE `Log`
 ALTER TABLE `Product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `ProductUpdate`
+--
+ALTER TABLE `ProductUpdate`
+  MODIFY `update_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
@@ -332,6 +360,12 @@ ALTER TABLE `Log`
   ADD CONSTRAINT `log_host` FOREIGN KEY (`host`) REFERENCES `Host` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `log_session` FOREIGN KEY (`session`) REFERENCES `LicenseSession` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `log_user` FOREIGN KEY (`user`) REFERENCES `User` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `ProductUpdate`
+--
+ALTER TABLE `ProductUpdate`
+  ADD CONSTRAINT `productupdate_product_id` FOREIGN KEY (`update_id`) REFERENCES `Product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `UserHostMachine`
