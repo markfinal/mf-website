@@ -48,6 +48,13 @@ define('ERR_PRODUCTUPDATE_SESSION_TOKEN_INVALID',  703);
 define('ERR_PRODUCTUPDATE_DATA_NOT_VERIFIED',      704);
 define('ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE',     705);
 
+// client errors
+define('ERR_CLIENT_CANNOT_CONNECT',               1001); // never issued on the server side but here for completness
+define('ERR_CLIENT_DATA_NOT_SPECIFIED',           1002);
+define('ERR_CLIENT_SIG_NOT_SPECIFIED',            1003);
+define('ERR_CLIENT_SESSION_TOKEN_INVALID',        1004);
+define('ERR_CLIENT_DATA_NOT_VERIFIED',            1005);
+
 // something went wrong with the database
 define('ERR_MYSQL_ERROR',                         2000);
 
