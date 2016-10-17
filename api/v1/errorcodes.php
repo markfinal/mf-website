@@ -49,10 +49,10 @@ define('ERR_PRODUCTUPDATE_DATA_NOT_VERIFIED',      704);
 define('ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE',     705);
 
 // something went wrong with the database
-define('ERR_MYSQL_ERROR',                         1000);
+define('ERR_MYSQL_ERROR',                         2000);
 
 // something else went wrong on the server
-define('ERR_SERVER_ERROR',                        2000);
+define('ERR_SERVER_ERROR',                        3000);
 
 // aliases for real MySQL errors
 define('MYSQL_ERRCODE_DUPLICATE_KEY',             1062);
