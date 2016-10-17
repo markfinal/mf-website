@@ -35,18 +35,11 @@ define('ERR_LICENSE_TYPE_UNKNOWN',                 505);
 define('ERR_LICENSE_EXPIRED',                      506);
 define('ERR_LICENSE_PRODUCT_UNKNOWN',              507);
 
-// license request error codes
-define('ERR_LICENSE_RETURN_DATA_NOT_SPECIFIED',    601);
-define('ERR_LICENSE_RETURN_SIG_NOT_SPECIFIED',     602);
-define('ERR_LICENSE_RETURN_SESSION_TOKEN_INVALID', 603);
-define('ERR_LICENSE_RETURN_DATA_NOT_VERIFIED',     604);
+// license return error codes
+// any issues are ignored
 
 // application update error codes
-define('ERR_PRODUCTUPDATE_DATA_NOT_SPECIFIED',     701);
-define('ERR_PRODUCTUPDATE_SIG_NOT_SPECIFIED',      702);
-define('ERR_PRODUCTUPDATE_SESSION_TOKEN_INVALID',  703);
-define('ERR_PRODUCTUPDATE_DATA_NOT_VERIFIED',      704);
-define('ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE',     705);
+define('ERR_PRODUCTUPDATE_ALREADY_UP_TO_DATE',     701);
 
 // client errors
 define('ERR_CLIENT_CANNOT_CONNECT',               1001); // never issued on the server side but here for completness
