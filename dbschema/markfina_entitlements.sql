@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 14, 2016 at 07:35 PM
+-- Generation Time: Oct 17, 2016 at 04:06 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -31,6 +31,18 @@ CREATE TABLE `AccessToken` (
   `token` char(32) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `userhost` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Feedback`
+--
+
+CREATE TABLE `Feedback` (
+  `id` int(11) NOT NULL,
+  `session` int(11) NOT NULL,
+  `message` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -200,6 +212,13 @@ ALTER TABLE `AccessToken`
   ADD KEY `userhost` (`userhost`);
 
 --
+-- Indexes for table `Feedback`
+--
+ALTER TABLE `Feedback`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `session` (`session`);
+
+--
 -- Indexes for table `Host`
 --
 ALTER TABLE `Host`
@@ -280,6 +299,11 @@ ALTER TABLE `UserHostMachineRequest`
 ALTER TABLE `AccessToken`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `Feedback`
+--
+ALTER TABLE `Feedback`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `Host`
 --
 ALTER TABLE `Host`
@@ -338,6 +362,12 @@ ALTER TABLE `UserHostMachineRequest`
 --
 ALTER TABLE `AccessToken`
   ADD CONSTRAINT `accesstoken_userhost` FOREIGN KEY (`userhost`) REFERENCES `UserHostMachine` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `Feedback`
+--
+ALTER TABLE `Feedback`
+  ADD CONSTRAINT `feedback_session` FOREIGN KEY (`session`) REFERENCES `LicenseSession` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `License`
