@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2016 at 04:06 AM
+-- Generation Time: Oct 17, 2016 at 04:09 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -150,7 +150,7 @@ INSERT INTO `Product` (`id`, `name`) VALUES
 --
 
 CREATE TABLE `ProductUpdate` (
-  `update_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `product` int(11) NOT NULL,
   `major_version` int(11) NOT NULL,
   `minor_version` int(11) NOT NULL,
@@ -266,7 +266,8 @@ ALTER TABLE `Product`
 -- Indexes for table `ProductUpdate`
 --
 ALTER TABLE `ProductUpdate`
-  ADD PRIMARY KEY (`update_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product` (`product`);
 
 --
 -- Indexes for table `User`
@@ -337,7 +338,7 @@ ALTER TABLE `Product`
 -- AUTO_INCREMENT for table `ProductUpdate`
 --
 ALTER TABLE `ProductUpdate`
-  MODIFY `update_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `User`
 --
@@ -395,7 +396,7 @@ ALTER TABLE `Log`
 -- Constraints for table `ProductUpdate`
 --
 ALTER TABLE `ProductUpdate`
-  ADD CONSTRAINT `productupdate_product_id` FOREIGN KEY (`update_id`) REFERENCES `Product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `productupdate_product_id` FOREIGN KEY (`product`) REFERENCES `Product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `UserHostMachine`
