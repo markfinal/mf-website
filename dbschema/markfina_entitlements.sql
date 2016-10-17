@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2016 at 04:09 AM
+-- Generation Time: Oct 17, 2016 at 05:34 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -42,7 +42,7 @@ CREATE TABLE `AccessToken` (
 CREATE TABLE `Feedback` (
   `id` int(11) NOT NULL,
   `session` int(11) NOT NULL,
-  `message` int(11) NOT NULL
+  `message` varchar(8192) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

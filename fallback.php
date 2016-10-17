@@ -62,6 +62,7 @@ try
     require_once 'api/v1/licenserequest.php';
     require_once 'api/v1/licensereturn.php';
     require_once 'api/v1/checkforupdates.php';
+    require_once 'api/v1/providefeedback.php';
 
     switch ($_SERVER['REQUEST_URI'])
     {
@@ -91,6 +92,10 @@ try
 
         case '/api/v1/checkforupdate':
             checkforupdates();
+            break;
+
+        case '/api/v1/feedback':
+            providefeedback();
             break;
 
         default:
