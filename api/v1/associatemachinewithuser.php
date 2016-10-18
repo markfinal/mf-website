@@ -100,12 +100,15 @@ function associatemachinewithuser()
 
     $email_message = '<html>';
     $email_message .= '<body>';
-    $email_message .= '<p>To authorise your machine, click <a href=\''.$full_url.'\'>here</a>. This link is valid for 24 hours only.</p>';
-    $email_message .= '<p>Once your machine has been authorised, please return to the application and continue the licensing steps.</p>';
+    $email_message .= '<p>You have received this message because your email address is being used to license some software. If you did not expect to receive this email, please delete this message.</p>';
+    $email_message .= '<p>To authorise the machine with the MAC address '.$MACaddress.', click <a href=\''.$full_url.'\'>here</a>. This link will expire after 24 hours.</p>';
+    $email_message .= '<p>Once your machine has been authorised, please return to the software and continue to follow the licensing instructions.</p>';
+    $email_message .= '<p>Thank you for licensing the software.</p>';
+    $email_message .= '<p>Do not reply to this email. This email account is not monitored.</p>';
     $email_message .= '</body>';
     $email_message .= '</html>';
 
-    send_email($_POST['email'], 'Machine activation', $email_message);
+    send_email($_POST['email'], 'Software licensing machine authorisation request', $email_message);
 
     unset($connection);
 
