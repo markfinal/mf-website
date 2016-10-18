@@ -1,7 +1,7 @@
 <?php
 function send_email($to, $subject, $body, $attachments=array())
 {
-    $from = 'Mark Final <mark@markfinal.me.uk>';
+    $from = 'Licensing (Do not reply) <licensing_no_reply@markfinal.me.uk>';
 
     $boundary = uniqid('np');
 
