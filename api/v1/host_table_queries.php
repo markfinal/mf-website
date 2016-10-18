@@ -1,6 +1,7 @@
 <?php
 require_once 'api/v1/dbutils.php';
 require_once 'api/v1/errorcodes.php';
+require_once 'api/v1/log.php';
 
 function host_table_insert($MAC)
 {
@@ -46,11 +47,11 @@ function host_table_get_id($MAC, $num_user_machines, $max_machines)
 {
     $connection = connectdb();
 
-    $query = $connection->prepare('SELECT id FROM Host WHERE MAC=:MAC');
+    $query = $connection->prepare('SELECT id,revoke_reason FROM Host WHERE MAC=:MAC');
     $query->bindParam(':MAC', $MAC, PDO::PARAM_STR);
     $query->execute();
-    $host_id = $query->fetchColumn(0);
-    if (0 == $host_id)
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+    if (!$result)
     {
         // check that adding one more machine will not exceed the quota
         if ($num_user_machines + 1 > $max_machines)
@@ -72,9 +73,20 @@ function host_table_get_id($MAC, $num_user_machines, $max_machines)
         echo json_encode($response);
         exit();
     }
+    else if (!is_null($result['revoke_reason']))
+    {
+        storelog("Host has been revoked because ".$result['revoke_reason']);
+        $response = array();
+        $response['errormessage'] = 'Host is unable to be licensed';
+        $response['errorcode'] = ERR_MAC_ADDRESS_REFUSED;
+
+        header('Content-Type: application/json', true, 403);
+        echo json_encode($response);
+        exit();
+    }
 
     unset($connection);
 
-    return $host_id;
+    return $result['id'];
 }
 ?>

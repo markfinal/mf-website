@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2016 at 05:34 AM
+-- Generation Time: Oct 18, 2016 at 06:25 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -54,7 +54,7 @@ CREATE TABLE `Feedback` (
 CREATE TABLE `Host` (
   `id` int(11) NOT NULL,
   `MAC` varchar(64) NOT NULL,
-  `RevokeReason` varchar(4096) DEFAULT NULL
+  `revoke_reason` varchar(4096) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
