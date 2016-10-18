@@ -75,7 +75,7 @@ function host_table_get_id($MAC, $num_user_machines, $max_machines)
     }
     else if (!is_null($result['revoke_reason']))
     {
-        storelog("Host has been revoked because ".$result['revoke_reason']);
+        storelog('Host with MAC '.$MAC.' has been revoked because '.$result['revoke_reason']);
         $response = array();
         $response['errormessage'] = 'Host is unable to be licensed';
         $response['errorcode'] = ERR_MAC_ADDRESS_REFUSED;
