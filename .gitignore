@@ -3,7 +3,6 @@ sqlpasswd
 *.aux
 *.log
 *.out
-*.pdf
 *.gz
 mf-website.sublime-workspace
 .DS_Store
