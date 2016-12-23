@@ -6,3 +6,4 @@ sqlpasswd
 *.pdf
 *.gz
 mf-website.sublime-workspace
+.DS_Store
