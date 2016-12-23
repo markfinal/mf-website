@@ -42,7 +42,7 @@ Wisborough Green & {\it Mobile} & +44 (0)7811 660473\\
 West Sussex &&\\
 England &&\\
 {\it E-mail} & \multicolumn{2}{l}{\href{mailto:markfinal@hotmail.com}{markfinal@hotmail.com}}\\
-{\it Linkedin} & \multicolumn{2}{l}{\href{http://uk.linkedin.com/in/markfinal}{http://uk.linkedin.com/in/markfinal}}\\
+{\it LinkedIn} & \multicolumn{2}{l}{\href{http://uk.linkedin.com/in/markfinal}{http://uk.linkedin.com/in/markfinal}}\\
 \end{tabular}
 
 %\cvheading{Personal Statement}
@@ -59,74 +59,99 @@ GSCE (1992-3): 10 A-C subjects including Mathematics, English and the Sciences.
 
 \cvheading{Professional Skills}
 \begin{itemize}
-\item Experience in the visual effects industry as a software engineer since June 2010. Main role is developing and maintaining the 3D painting projection application, Mari.
-\item Experience in the games industry as a graphics software engineer from 2000 to 2010. Led, or developed on, four generations of graphics technologies used by Electronic Arts world wide studios, notably on PlayStation 3.
-\item Experience using C and C++ in academia and industry since 1997. Additionally, some experience with Intel and PowerPC assembly languages and vector intrinsics, and C\# for Windows and Mono for Linux and OSX.
-\item Daily use of VisualStudio 2005--2010, and GCC toolchains; git and svn for source control. Past experience of IncrediBuild and SN-DBS distributed build systems, Perforce source control, and game console related toolchains.
-\item Experienced in GLSL, HLSL, Cg, and assembler shader programming languages, OpenGL 1--4 (GLW/GLX backends), Direct3D (Windows v6--11 and Xbox360), and libgcm on PlayStation 3. Proficient using GPU profiling tools, such as PIX, NVPerfHUD, and GPAD, to identify bottlenecks.
-\item Basic experience of writing shaders and RIB files for RenderMan.
-\item Developed games rendering technology in a test-driven environment.
+\item Self motivated, time management, determination, proactive. As an entrepreneur, I have had to hone these skills in order to achieve my goals.
+\item Experience in the visual effects industry as a software engineer from 2010--15, with various Foundry product code bases and practices.
+\item Experience in the games industry as a graphics software engineer from 2000--10. Led, or helped developed, four generations of graphics technologies used by Electronic Arts world wide studios, most notably on PlayStation 3.
+\item Working knowledge of C, C++ (`98 and `11 standards) and C\# (up to 6.0), including VisualC++ 2005-2015, GCC, Clang, .NET and mono toolchains.
+\item Source control experience of git, svn, cvs, Perforce; including creating and administrating the Foundry's Perforce server (including disaster recovery) from scratch.
+\item Experienced in GLSL, HLSL, Cg, and assembler shader programming languages, OpenGL 1--4 (GLW/GLX/Apple backends), Direct3D (v6--9 on Windows, and Xbox360), and libgcm on PlayStation 3. Experience with GPU profiling tools, such as PIX, NVPerfHUD, and GPAD, to identify bottlenecks. Some recent experience in CodeXL for OpenGL.
+\item Written (C++) code to procedurally generate RSL and RIB files for RenderMan.
+\item Developed rendering technology in a test-driven environment.
 \item Work effectively both in a team and as an individual, and am competent communicating in written and oral mediums.
-\item Technically led and mentored junior engineering staff.
-\item Other skills include creating and maintaining build configurations, in SCons, Make, Jam, EA proprietary solutions, and my own open source build system. At EA, jointly maintained and enhanced an automated buildfarm, with a PHP and Perl front-end driven from a PostgreSQL database, across 15 blade servers.
+\item Managed, and technically led and mentored junior engineering staff.
+\item Other skills include an interest and experience of build systems, including having written my own; writing technical documentation; compiler best practices; code reviews; test driven development.
 \end{itemize}
 
 \pagebreak
 \renewcommand{\thepage}{\tiny{\me\hfill\arabic{page}\hfill Curriculum Vitae}}
 
 \cvheading{Work Experience}
-\place{The Foundry VisionMongers}{The Communications Building, Leicester Square, London, WC2H 7LT}
-\fromto{June 2010}{Present}
-I am a software engineer for the 3D painting projection application, Mari. I ported Mari from a Linux only application to Windows, updating the C++ source base as well as the SCons build system. I am responsible for the Ptex support in Mari, having taken it from early prototype to a full production implementation. Ptex required many problems to be addressed, including how to efficiently create and maintain dynamic UV maps of arbitrary geometry.
+\place{Entrepreneur}{Working from home}
+\fromto{July 2015}{Present}
+I funded my own development time. My goals were to complete my build system, BuildAMation, and publish as open source; and to develop and publish a cross-platform desktop animation application integrating realtime and offline REYES rendering suitable for students/amateur/enthusiast artists wanting to create CG shorts. Both projects are now available online from:
+\begin{itemize}
+\item \href{http://buildamation.com}{http://buildamation.com}
+\item \href{http://director.markfinal.me.uk}{http://director.markfinal.me.uk} with videos at \href{https://vimeo.com/user58998164/videos}{https://vimeo.com/user58998164/videos}.
+\end{itemize}
+Director is a C++11 Qt5 application, integrating open source standards such as OpenGL, Open Shading Language, OpenImageIO, sqlite, libgit2, curl, and openssl. It is compatible with Pixar's PRMan renderer. In writing the whole application by myself, I have had hurdles to overcome including time management, problem solving, working alone, complexity management. However, I was also empowered by having full control of the direction of the product. I am very happy to have completed a first pass, and have made the software publicly available, while I iterate on bug fixing and finalizing features for the first official release.
+\\
+In addition to writing the desktop software, I also developed a cloud based licensing solution used in Director, written in PHP and MySQL.
+
+\place{The Foundry VisionMongers Ltd}{5 Golden Square, London, W1F 9HT}
+\fromto{April 2012}{July 2015}
+I was promoted to lead DevOps engineer, responsible for continuous integration, automated testing, build scripts, source control, crash reports.
+\begin{itemize}
+\item Known as the `go to' guy for problem solving, particularly build scripts.
+\item Created and administered a new Perforce server, migrating existing source control to it.
+\item Created the crash reporting system, based on Google's Breakpad.
+\item First experience of management, with a small team of three other engineers.
+\end{itemize}
+
+\place{The Foundry VisionMongers Ltd}{5 Golden Square, London, W1F 9HT}
+\fromto{June 2010}{April 2012}
+I was a software engineer for the 3D painting projection application, Mari. I completed the Windows port, implemented Ptex support, and implemented PSD support, as well as general bug fixing and advice to QA and support.
 \begin{itemize}
 \item Strong team member, with good communication skills. Jointly responsible for daily reports to collaborating offsite developers and code merges between sites.
 \item I have stood in for the lead engineer when required.
 \item Good relationships with users, including Pixar and Lucas Film.
-\item Broad skills covering more than just programming. I will happily fix build scripts, help with documentation or QA, and manage builds for external release.
 \end{itemize}
 
 \place{Electronic Arts}{Onslow House, Onslow Street, Guildford, Surrey, GU1 4TL}
-\fromto{March 2001}{May 2010}
-From December 2009 to May 2010 I worked at Criterion Games, enhancing their rendering engine to become a multi-threaded/-CPU solution for Xbox360 and PlayStation 3, that was used in the "Need For Speed: Hot Pursuit" title.
+\fromto{December 2009}{May 2010}
+I worked for Criterion Games, at their request, enhancing their rendering engine to become a multi-threaded/-CPU solution for Xbox360 and PlayStation 3, that was used in the "Need For Speed: Hot Pursuit" title.
 
-Previously, I worked at EATech (formally Criterion Software), a central technology group supporting world wide game teams at Electronic Arts.
+\place{Electronic Arts}{Onslow House, Onslow Street, Guildford, Surrey, GU1 4TL}
+\fromto{July 2004}{December 2009}
+I worked at EATech (formally Criterion Software), a central technology group supporting world wide game teams at Electronic Arts.
 \begin{itemize}
 \item Senior member of the technology team at EATech UK. Lead engineer for graphics technology for development and support, specializing on PlayStation 3.
 \item Developed PlayStation 3 graphics technology, collaborating with EA teams to create the FightNight demo shown at the PlayStation 3 launch in 2005.
-\item Involved with many other game titles, including Burnout Paradise, Skate (1--3 \& It), Mirror's Edge, Need For Speed Prostreet, Fight Night 3, Tiger Woods.
-\item Developed RenderWare 3 and 4 middleware for Direct3D7--9 and OpenGL (Windows/OSX), and PlayStation 3.
+\item Involved with, or advised on, many other game titles, including Burnout Paradise, Skate (1--3 \& It), Mirror's Edge, Need For Speed Prostreet, Fight Night 3, Tiger Woods.
 \end{itemize}
+
+\place{Criterion Software}{Westbury House, Bury Fields, Guildford, Surrey, GU2 4AZ}
+\fromto{April 2001}{July 2004}
+I worked in the graphics team at Criterion, developing RenderWare 3 and 4 middleware, for Direct3D7--9 and OpenGL (Windows/macOS).
+
 \place{AAA Game}{5th Floor, Crown House, Linton Road, Barking, IG11 8GH}
 \fromto{March 2000}{March 2001}
 At AAA Game I was a games programmer, developing the Direct3D 6 engine for PC CD-ROM titles.
 
-\place{University of Hertfordshire}{Address on previous page}
+\place{University of Hertfordshire}{Address above}
 \fromto{October 1997}{February 2000}
 After graduating, I taught A-level standard mathematics to engineering undergraduates, and researched numerical optimization techniques. In the 1998--9 academic year I was course leader on a second year module in the Mathematics degree teaching Fortran 90.
 
 \pagebreak
 
 \cvheading{Main programming languages}
-C++, C, C\#, Python
+C++ (`98 and `11 standards), C, C\#, Python
 
 \cvheading{Additional language experiences}
-Assembly languages, vector intrinsics, \TeX, \LaTeXe, Make, Java, Perl, PHP, SQL, Jam, HTML, NAnt.
+x86 assembly languages, \TeX, \LaTeXe, Make, Java, PHP, MySQL, HTML.
 
 \cvheading{Key skills}
-Enjoys a challenge. Proactive. Good time keeping. Correctness and consistency. Key team member. Share information. Evaluate new technology and hardware. Documentation. Code reviews. Efficient code and processes. Profiling bottlenecks. Best use of toolchains.
+Self motivated. Enjoys a challenge. Proactive. Good time keeping. Correctness and consistency. Key team member. Share information. Evaluate new technology and hardware. Documentation. Code reviews. Efficient code and processes. Profiling bottlenecks. Best use of toolchains.
 
 \cvheading{Interests, Responsibilities and Notable Achievements}
 \begin{itemize}
-\item I designed and continue to develop and maintain an Open Source build system, Opus, published on GoogleCode. Opus is a declarative script dependency system, with a plugin architecture, based upon C\#. It has scaled well to both simple tests and commerical sized source bases.
-\item My voice has been used for The Foundry's external phone system.
-\item An associate member of the Institute of Mathematics and its Applications, and also a member of the UK \TeX\ Users' Group.
+\item An associate member of the Institute of Mathematics and its Applications.
 \item I am a member of the Institute of Advanced Motorists, having passed the advanced test in October 2007.
 \item In February 2007, I was one of the employee representatives for EATech during a redundancy consultancy period.
 \item Throughout February 2000, I backpacked along the Sunshine Coast of Australia from Brisbane to Cairns.
 \item While at University, I was a member of a team competing at the British Computer Society Programming Competition, from 1998 to 2000.
 \item I won a programming competition in 1999 in Acorn User magazine, writing a 3D graphics demo in C++ on RISCOS on a StrongARM.
 \item My professional interests including dabbling in computer graphics techniques, technical typography with \LaTeXe, developing graphics engines and build systems.
-\item My leisure interests include playing the piano, driving, cooking, science fiction, astronomy, origami, movies, and Sudoku and Hitoshii (KenKen) puzzles.
+\item My leisure interests include playing the piano, driving, cooking, science fiction, astronomy, origami, movies, and spotting CGI effects.
 \end{itemize}
 
 \cvheading{References}
